@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace PRM392_Backend.Infrastructure.Migrations
 {
     /// <inheritdoc />
@@ -31,6 +33,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     IsActived = table.Column<bool>(type: "bit", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -360,6 +363,15 @@ namespace PRM392_Backend.Infrastructure.Migrations
                         column: x => x.OrderID,
                         principalTable: "Orders",
                         principalColumn: "ID");
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "3cb28e4f-3fd1-434b-9935-779228be461d", null, "Admin", "ADMIN" },
+                    { "fca9741b-e4c7-4597-9a82-0f2f9621e747", null, "Customer", "CUSTOMER" }
                 });
 
             migrationBuilder.CreateIndex(

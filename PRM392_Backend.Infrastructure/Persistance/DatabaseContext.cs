@@ -25,6 +25,7 @@ namespace PRM392_Backend.Infrastructure.Persistance
 			modelBuilder.ApplyConfiguration(new NotificationConfiguration());
 			modelBuilder.ApplyConfiguration(new ChatMessageConfiguration());
 			modelBuilder.ApplyConfiguration(new StoreLocationConfiguration());
+			modelBuilder.ApplyConfiguration(new RoleConfiguration());
 		}
 
 		public DbSet<User> Users { get; set; }

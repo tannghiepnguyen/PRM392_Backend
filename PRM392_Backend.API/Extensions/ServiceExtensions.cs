@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PRM392_Backend.Domain.Models;
+using PRM392_Backend.Domain.Repository;
 using PRM392_Backend.Infrastructure.Persistance;
+using PRM392_Backend.Infrastructure.Repository;
+using PRM392_Backend.Service.IService;
+using PRM392_Backend.Service.Service;
 
 namespace PRM392_Backend.API.Extensions
 {
@@ -39,6 +43,12 @@ namespace PRM392_Backend.API.Extensions
 			})
 				.AddEntityFrameworkStores<DatabaseContext>()
 				.AddDefaultTokenProviders();
+		}
+
+		public static void AddManager(this IServiceCollection services)
+		{
+			services.AddScoped<IServiceManager, ServiceManager>();
+			services.AddScoped<IRepositoryManager, RepositoryManager>();
 		}
 	}
 }

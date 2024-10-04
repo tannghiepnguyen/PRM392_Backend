@@ -1,4 +1,5 @@
 using PRM392_Backend.API.Extensions;
+using PRM392_Backend.Service.Extension;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.ConfigureCors();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddAuthentication();
 builder.Services.ConfigureIdentity();
+builder.Services.AddManager();
+builder.Services.AddAutoMapper();
 
 var app = builder.Build();
 
@@ -24,6 +28,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
