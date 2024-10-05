@@ -4,6 +4,7 @@
 	{
 		ICategoryRepository CategoryRepository { get; }
 		IStoreLocationRepository StoreLocationRepository { get; }
+		IProductRepository ProductRepository { get; }
 		Task Save();
 	}
 }

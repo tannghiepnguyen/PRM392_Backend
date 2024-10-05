@@ -18,6 +18,7 @@ builder.Services.ConfigureIdentity();
 builder.Services.AddManager();
 builder.Services.AddAutoMapper();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddBlobService(builder.Configuration);
 
 var app = builder.Build();
 

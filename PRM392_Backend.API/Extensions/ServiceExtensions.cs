@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Azure.Storage.Blobs;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PRM392_Backend.Domain.Models;
 using PRM392_Backend.Domain.Repository;
@@ -49,6 +50,12 @@ namespace PRM392_Backend.API.Extensions
 		{
 			services.AddScoped<IServiceManager, ServiceManager>();
 			services.AddScoped<IRepositoryManager, RepositoryManager>();
+		}
+
+		public static void AddBlobService(this IServiceCollection services, IConfiguration configuration)
+		{
+			services.AddSingleton(u => new BlobServiceClient(configuration.GetConnectionString("StorageAccount")));
+			services.AddSingleton<IBlobService, BlobService>();
 		}
 	}
 }

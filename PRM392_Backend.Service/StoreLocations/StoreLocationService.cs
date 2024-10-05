@@ -6,7 +6,7 @@ using PRM392_Backend.Service.StoreLocations.DTO;
 
 namespace PRM392_Backend.Service.StoreLocations
 {
-	public class StoreLocationService : IStoreLocationService
+	internal sealed class StoreLocationService : IStoreLocationService
 	{
 		private readonly IRepositoryManager repositoryManager;
 		private readonly IMapper mapper;

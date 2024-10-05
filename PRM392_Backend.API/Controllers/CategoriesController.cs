@@ -30,7 +30,7 @@ namespace PRM392_Backend.API.Controllers
 		}
 
 		[HttpGet("{id:guid}")]
-		public async Task<IActionResult> GetCategory(Guid id)
+		public async Task<IActionResult> GetCategory([FromRoute] Guid id)
 		{
 			var category = await serviceManager.CategoryService.GetCategory(id, trackChange: false);
 			if (category == null) return NotFound();
@@ -38,14 +38,14 @@ namespace PRM392_Backend.API.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> CreateCategory(CategoryForCreationDto categoryForCreationDto)
+		public async Task<IActionResult> CreateCategory([FromBody] CategoryForCreationDto categoryForCreationDto)
 		{
 			var category = await serviceManager.CategoryService.CreateCategory(categoryForCreationDto);
 			return CreatedAtAction(nameof(GetCategory), new { id = category.ID }, category);
 		}
 
 		[HttpPut("{id:guid}")]
-		public async Task<IActionResult> UpdateCategory(Guid id, CategoryForUpdateDto categoryForUpdateDto)
+		public async Task<IActionResult> UpdateCategory([FromRoute] Guid id, [FromBody] CategoryForUpdateDto categoryForUpdateDto)
 		{
 			await serviceManager.CategoryService.UpdateCategory(id, categoryForUpdateDto, trackChange: false);
 			return NoContent();

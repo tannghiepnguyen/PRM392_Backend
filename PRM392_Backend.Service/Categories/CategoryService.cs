@@ -6,7 +6,7 @@ using PRM392_Backend.Service.Categories.DTO;
 
 namespace PRM392_Backend.Service.Categories
 {
-	public class CategoryService : ICategoryService
+	internal sealed class CategoryService : ICategoryService
 	{
 		private readonly IRepositoryManager repositoryManager;
 		private readonly IMapper mapper;

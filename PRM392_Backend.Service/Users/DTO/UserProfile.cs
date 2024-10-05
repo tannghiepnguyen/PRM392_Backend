@@ -8,6 +8,8 @@ namespace PRM392_Backend.Service.Users.DTO
 		public UserProfile()
 		{
 			CreateMap<UserForRegistrationDto, User>();
+			CreateMap<UserForUpdateDto, User>();
+			CreateMap<User, UserForReturnDto>();
 		}
 	}
 }

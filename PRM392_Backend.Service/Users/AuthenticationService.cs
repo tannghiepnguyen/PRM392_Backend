@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using PRM392_Backend.Domain.Constant;
+using PRM392_Backend.Domain.Exceptions;
 using PRM392_Backend.Domain.Models;
 using PRM392_Backend.Service.Users.DTO;
 using System.IdentityModel.Tokens.Jwt;
@@ -11,7 +13,7 @@ using System.Text;
 
 namespace PRM392_Backend.Service.Users
 {
-	public class AuthenticationService : IAuthenticationService
+	internal sealed class AuthenticationService : IAuthenticationService
 	{
 		private readonly UserManager<User> userManager;
 		private readonly IMapper mapper;
@@ -92,6 +94,40 @@ namespace PRM392_Backend.Service.Users
 			var result = (user != null && await userManager.CheckPasswordAsync(user, userForAuthentication.Password));
 
 			return result;
+		}
+
+		public async Task<IdentityResult> UpdateUser(string userId, UserForUpdateDto userForUpdateDto)
+		{
+			var user = await userManager.FindByIdAsync(userId);
+
+			if (user is null) throw new UserNotFoundException(userId);
+
+			mapper.Map(userForUpdateDto, user);
+
+			return await userManager.UpdateAsync(user);
+		}
+
+		public async Task<UserForReturnDto> GetUserById(string userId)
+		{
+			var user = await userManager.FindByIdAsync(userId);
+			if (user is null) throw new UserNotFoundException(userId);
+
+			return mapper.Map<UserForReturnDto>(user);
+		}
+
+		public async Task<IEnumerable<UserForReturnDto>> GetUsers()
+		{
+			var users = await userManager.Users.ToListAsync();
+			return mapper.Map<IEnumerable<UserForReturnDto>>(users);
+		}
+
+		public async Task<IdentityResult> UpdateUserPassword(string userId, UserForUpdatePasswordDto userForUpdatePasswordDto)
+		{
+			var user = await userManager.FindByIdAsync(userId);
+
+			if (user is null) throw new UserNotFoundException(userId);
+
+			return await userManager.ChangePasswordAsync(user, userForUpdatePasswordDto.OldPassword, userForUpdatePasswordDto.NewPassword);
 		}
 	}
 }
