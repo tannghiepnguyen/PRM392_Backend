@@ -12,7 +12,6 @@
 		public Guid? CategoryId { get; set; }
 		public Category Category { get; set; }
 		public ICollection<CartItem> CartItem { get; set; }
-		public bool IsDeleted { get; set; }
-		public DateTime? DeletedAt { get; set; }
+		public bool IsActive { get; set; }
 	}
 }

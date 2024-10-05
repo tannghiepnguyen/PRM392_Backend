@@ -12,6 +12,7 @@ namespace PRM392_Backend.Infrastructure.Configuration
 			builder.Property(e => e.Address).IsRequired();
 			builder.Property(e => e.Latitude).IsRequired();
 			builder.Property(e => e.Longitude).IsRequired();
+			builder.Property(e => e.IsActive).IsRequired();
 			builder.HasMany(e => e.Orders).WithOne(e => e.StoreLocation).HasForeignKey(e => e.StoreLocationID);
 		}
 	}

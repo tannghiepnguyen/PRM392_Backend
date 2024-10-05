@@ -1,3 +1,4 @@
+using PRM392_Backend.API;
 using PRM392_Backend.API.Extensions;
 using PRM392_Backend.Service.Extension;
 
@@ -16,8 +17,11 @@ builder.Services.AddAuthentication();
 builder.Services.ConfigureIdentity();
 builder.Services.AddManager();
 builder.Services.AddAutoMapper();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 var app = builder.Build();
+
+app.UseExceptionHandler(opt => { });
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

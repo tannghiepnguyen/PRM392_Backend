@@ -12,8 +12,7 @@ namespace PRM392_Backend.Infrastructure.Configuration
 			builder.Property(e => e.Message).IsRequired();
 			builder.Property(e => e.IsRead).IsRequired();
 			builder.Property(e => e.CreatedAt).IsRequired();
-			builder.Property(e => e.IsDeleted).IsRequired();
-			builder.Property(e => e.DeletedAt).IsRequired();
+			builder.Property(e => e.IsActive).IsRequired();
 			builder.HasOne(e => e.Users).WithMany(e => e.Notifications).HasForeignKey(e => e.UserID).OnDelete(DeleteBehavior.Restrict);
 
 		}

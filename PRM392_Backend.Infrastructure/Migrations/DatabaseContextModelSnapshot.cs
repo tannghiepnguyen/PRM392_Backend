@@ -249,10 +249,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<string>("Status")
@@ -310,11 +307,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .IsRequired()
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.HasKey("ID");
@@ -328,10 +321,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<string>("Message")
@@ -360,11 +350,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .IsRequired()
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsRead")
@@ -465,10 +451,6 @@ namespace PRM392_Backend.Infrastructure.Migrations
                     b.Property<Guid?>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .IsRequired()
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("FullDescription")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -477,7 +459,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<double>("Price")
@@ -509,6 +491,9 @@ namespace PRM392_Backend.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
 
@@ -533,7 +518,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActived")
+                    b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.HasDiscriminator().HasValue("User");

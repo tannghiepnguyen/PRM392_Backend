@@ -11,8 +11,7 @@ namespace PRM392_Backend.Infrastructure.Configuration
 			builder.HasKey(e => e.ID);
 			builder.Property(e => e.Message).IsRequired();
 			builder.Property(e => e.SentdAt).IsRequired();
-			builder.Property(e => e.IsDeleted).IsRequired();
-			builder.Property(e => e.DeletedAt).IsRequired(false);
+			builder.Property(e => e.IsActive).IsRequired();
 			builder.HasOne(e => e.User).WithMany(e => e.ChatMessages).HasForeignKey(e => e.UserID).OnDelete(DeleteBehavior.Restrict);
 		}
 	}

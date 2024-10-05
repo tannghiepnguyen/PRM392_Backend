@@ -17,8 +17,7 @@ namespace PRM392_Backend.Infrastructure.Configuration
 			builder.Property(p => p.Price).IsRequired();
 			builder.HasOne(p => p.Category).WithMany(c => c.Products).HasForeignKey(p => p.CategoryId).OnDelete(DeleteBehavior.Restrict);
 			builder.HasMany(p => p.CartItem).WithOne(ci => ci.Product).OnDelete(DeleteBehavior.Restrict);
-			builder.Property(p => p.IsDeleted).IsRequired();
-			builder.Property(p => p.DeletedAt).IsRequired();
+			builder.Property(p => p.IsActive).IsRequired();
 		}
 	}
 }

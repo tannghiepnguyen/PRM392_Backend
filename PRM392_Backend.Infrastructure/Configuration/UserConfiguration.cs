@@ -9,7 +9,7 @@ namespace PRM392_Backend.Infrastructure.Configuration
 		public void Configure(EntityTypeBuilder<User> builder)
 		{
 			builder.Property(e => e.Address).HasMaxLength(255).IsRequired();
-			builder.Property(e => e.IsActived).IsRequired();
+			builder.Property(e => e.IsActive).IsRequired();
 
 		}
 	}

@@ -73,7 +73,7 @@ namespace PRM392_Backend.Service.Users
 		public async Task<IdentityResult> RegisterUser(UserForRegistrationDto userForRegistration)
 		{
 			var user = mapper.Map<User>(userForRegistration);
-			user.IsActived = true;
+			user.IsActive = true;
 
 			var result = await userManager.CreateAsync(user, userForRegistration.Password);
 

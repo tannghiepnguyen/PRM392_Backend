@@ -7,9 +7,8 @@
 		public User User { get; set; }
 		public double TotalPrice { get; set; }
 		public string Status { get; set; }
-		public bool IsDeleted { get; set; }
-		public DateTime? DeletedAt { get; set; }
 		public ICollection<CartItem> CartItems { get; set; }
 		public Order Order { get; set; }
+		public bool IsActive { get; set; }
 	}
 }

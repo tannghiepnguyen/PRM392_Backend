@@ -11,8 +11,7 @@ namespace PRM392_Backend.Infrastructure.Configuration
 			builder.HasKey(x => x.ID);
 			builder.Property(x => x.CategoryName).IsRequired().HasMaxLength(100);
 			builder.HasMany(x => x.Products).WithOne(x => x.Category).OnDelete(DeleteBehavior.Restrict);
-			builder.Property(x => x.IsDeleted).IsRequired();
-			builder.Property(x => x.DeletedAt).IsRequired();
+			builder.Property(x => x.IsActive).IsRequired();
 		}
 	}
 }

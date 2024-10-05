@@ -35,7 +35,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                     Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    IsActived = table.Column<bool>(type: "bit", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -62,8 +62,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                 {
                     ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CategoryName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -77,7 +76,8 @@ namespace PRM392_Backend.Infrastructure.Migrations
                     ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Latitude = table.Column<double>(type: "float", nullable: false),
-                    Longitude = table.Column<double>(type: "float", nullable: false)
+                    Longitude = table.Column<double>(type: "float", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -198,8 +198,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                     UserID = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     TotalPrice = table.Column<double>(type: "float", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -220,8 +219,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                     UserID = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SentdAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -243,8 +241,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsRead = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -269,8 +266,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                     ImageURL = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
                     CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
