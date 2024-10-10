@@ -9,12 +9,13 @@ namespace PRM392_Backend.Service.Carts.DTO
 {
     public class CartItemRequestDTO
     {
-        public Guid? CartID { get; set; }
-        public Guid? ProductID { get; set; }
+  
+        public Guid ProductID { get; set; }
         public int Quantity { get; set; }
     }
     public class CartRequestDTO
     {
-        List<CartItemRequestDTO> Items { get; set; }
+        public Guid? userId { get; set; }
+        public List<CartItemRequestDTO> Items { get; set; }
     }
 }

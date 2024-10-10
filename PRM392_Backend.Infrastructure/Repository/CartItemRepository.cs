@@ -20,7 +20,7 @@ namespace PRM392_Backend.Infrastructure.Repository
         /// Tạo một mục giỏ hàng mới.
         /// </summary>
         /// <param name="cartItem">Đối tượng mục giỏ hàng cần tạo.</param>
-        public void CreateCartItem(CartItem cartItem) => Create(cartItem);
+        public  void CreateCartItem(CartItem cartItem) => Create(cartItem);
 
         /// <summary>
         /// Lấy tất cả các mục giỏ hàng.
