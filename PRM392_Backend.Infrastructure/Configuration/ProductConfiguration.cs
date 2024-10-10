@@ -50,6 +50,7 @@ namespace PRM392_Backend.Infrastructure.Configuration
 					ProductName = "Vegan Avocado Burger",
 					BriefDescription = "A plant-based patty with avocado, vegan cheese, and fresh greens on a multigrain bun.",
 					FullDescription = "A fresh and nutritious choice, the Vegan Avocado Burger features a flavorful plant-based patty made from lentils, mushrooms, and chickpeas. It's topped with creamy avocado slices, vegan cheddar cheese, mixed greens, and a hint of garlic aioli. All these ingredients are packed inside a wholesome multigrain bun, offering a satisfying and guilt-free experience without sacrificing taste. This burger is ideal for vegans and health-conscious customers alike.",
+					TechnicalSpecification = "Avocado, vegan cheese, mixed greens, multigrain bun",
 					ImageURL = "https://prm392.blob.core.windows.net/prm392/VeganAvocadoBurger.jpg",
 					Price = 12.99,
 					CategoryId = Guid.Parse("5a2834d9-2630-4d1f-8126-daa29b800e78"),
