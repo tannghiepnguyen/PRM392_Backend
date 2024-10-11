@@ -39,7 +39,8 @@ namespace PRM392_Backend.Service.Orders
         public async Task<Order> CreateOrder(OrderRequestForCreate orderDTO)
         {
             Order order= mapper.Map<Order>(orderDTO);
-            order.OrderStatus = OrderStatus.Processing;
+            order.OrderStatus = OrderStatus.Processing.ToString() ;
+            order.PaymentMethod = orderDTO.PaymentMethod.ToString() ;
             var cartExist = await repositoryManager.CartRepository.GetCartById(order.CartID,true);
             if(cartExist.IsActive == false)
             {
@@ -56,12 +57,13 @@ namespace PRM392_Backend.Service.Orders
             return order;
         }
 
-        public async Task UpdateOrder(Guid id, Order order, bool trackChange)
+        public async Task UpdateOrder(Guid id, OrderStatus orderStatus)
         {
-            var existingOrder = await repositoryManager.OrderRepository.GetOrderById(id, trackChange);
+            var existingOrder = await repositoryManager.OrderRepository.GetOrderById(id,true);
             if (existingOrder == null) throw new OrderNotFoundException(id);
 
-            mapper.Map(order, existingOrder);
+            existingOrder.OrderStatus = orderStatus.ToString();
+            repositoryManager.OrderRepository.UpdateOrder(existingOrder);
             await repositoryManager.Save();
         }
 

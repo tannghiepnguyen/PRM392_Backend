@@ -14,6 +14,7 @@ namespace PRM392_Backend.Service.Orders
         Task<Order?> GetOrder(Guid id, bool trackChange);
         Task<Order> CreateOrder(OrderRequestForCreate order);
         //Task UpdateOrder(Guid id, Order order, bool trackChange);
+        Task UpdateOrder(Guid id, OrderStatus orderStatus);
         Task DeleteOrder(Guid id, bool trackChange);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PRM392_Backend.Domain.Exceptions;
+using PRM392_Backend.Domain.Models;
 using PRM392_Backend.Service.IService;
 using PRM392_Backend.Service.Orders;
 using PRM392_Backend.Service.Orders.DTO;
@@ -50,28 +51,28 @@ namespace PRM392_Backend.API.Controllers
 
 
 
-        //// PUT: api/Orders/{id}
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> UpdateOrder(Guid id, [FromBody] OrderForUpdateDto orderForUpdateDto, [FromQuery] bool trackChange)
-        //{
-        //    try
-        //    {
-        //        await orderService.UpdateOrder(id, orderForUpdateDto, trackChange);
-        //        return NoContent();
-        //    }
-        //    catch (OrderNotFoundException)
-        //    {
-        //        return NotFound();
-        //    }
-        //}
-
-        // DELETE: api/Orders/{id}
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOrder(Guid id, [FromQuery] bool trackChange)
+        // PUT: api/Orders/{id}
+        [HttpPut("update-status/{id}")]
+        public async Task<IActionResult> UpdateOrder(Guid id, OrderStatus orderStatus)
         {
             try
             {
-                await serviceManager.OrderService.DeleteOrder(id, trackChange);
+                await serviceManager.OrderService.UpdateOrder(id, orderStatus);
+                return NoContent();
+            }
+            catch (OrderNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
+        // DELETE: api/Orders/{id}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteOrder(Guid id)
+        {
+            try
+            {
+                await serviceManager.OrderService.DeleteOrder(id, true);
                 return NoContent();
             }
             catch (OrderNotFoundException)

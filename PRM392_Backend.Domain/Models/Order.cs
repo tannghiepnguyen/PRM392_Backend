@@ -16,12 +16,13 @@ namespace PRM392_Backend.Domain.Models
 		public StoreLocation StoreLocation { get; set; }
 		public DateTime OrderDate { get; set; }
 
-        [JsonConverter(typeof(JsonStringEnumConverter))]
-        public PaymentMethod PaymentMethod { get; set; }
+        //[JsonConverter(typeof(JsonStringEnumConverter))]
+        //public PaymentMethod PaymentMethod { get; set; }
+        public string PaymentMethod { get; set; }
 
-        [JsonConverter(typeof(JsonStringEnumConverter))]
-        public OrderStatus OrderStatus { get; set; }
-
+        //[JsonConverter(typeof(JsonStringEnumConverter))]
+        //public OrderStatus OrderStatus { get; set; }
+        public string OrderStatus { get; set; }
     }
     [JsonConverter(typeof(JsonStringEnumConverter))]
      public enum PaymentMethod
