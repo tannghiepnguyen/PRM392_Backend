@@ -66,7 +66,7 @@ namespace PRM392_Backend.Service.Carts
             Cart cartFinal = new Cart
             {
                 UserID = cart.userId.ToString(),
-                Status = "Pending",
+                Status = CartStatus.Unpaid.ToString(),
                 IsActive = true,
                 TotalPrice =0.0,
             };

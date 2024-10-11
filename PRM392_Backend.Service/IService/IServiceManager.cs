@@ -1,4 +1,5 @@
-﻿using PRM392_Backend.Service.Carts;
+﻿using PRM392_Backend.Service.CartItems;
+using PRM392_Backend.Service.Carts;
 using PRM392_Backend.Service.Categories;
 using PRM392_Backend.Service.Products;
 using PRM392_Backend.Service.StoreLocations;
@@ -13,5 +14,6 @@ namespace PRM392_Backend.Service.IService
 		IStoreLocationService StoreLocationService { get; }
 		IProductService ProductService { get; }
 		ICartService CartService { get; }
+		ICartItemService CartItemService { get; }
 	}
 }
