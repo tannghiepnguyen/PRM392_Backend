@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using PRM392_Backend.Domain.Exceptions;
 using PRM392_Backend.Domain.Models;
 using PRM392_Backend.Domain.Repository;
@@ -63,16 +65,10 @@ namespace PRM392_Backend.Service.CartItems
             repositoryManager.CartRepository.UpdateCart(cart);
             await repositoryManager.Save();
         }
-        //public async Task UpdateCartItem(Guid id, CartItemForUpdateDto cartItemForUpdateDto, bool trackChange)
-        //{
-        //    var cartItem = await repositoryManager.CartItemRepository.GetCartItemById(id, trackChange);
-        //    if (cartItem == null) throw new CartItemNotFoundException(id);
-
-        //    mapper.Map(cartItemForUpdateDto, cartItem);
-        //    await repositoryManager.Save();
-        //}
+      
         public async Task UpdateQuantityCartItem(CartItemForUpdateDTO cartItem)
         {
+            
             var total = 0.0;
             var cartItemExist = await repositoryManager.CartItemRepository.GetCartItemById(cartItem.ID, true);
             if (cartItemExist == null) throw new CartItemNotFoundException(cartItem.ID);
@@ -80,6 +76,11 @@ namespace PRM392_Backend.Service.CartItems
             repositoryManager.CartItemRepository.UpdateCartItem(cartItemExist);
             await repositoryManager.Save();
             var cart = await repositoryManager.CartRepository.GetCartById(cartItemExist.CartID,true);
+            if (cart.UserID != cartItem.UserID.ToString())
+            {
+                throw new InvalidOperationException("You don't have permission to update the quantity of this item.");
+            }
+
             foreach (var item in cart.CartItems)
             {
                 total += item.Quantity * item.Price;

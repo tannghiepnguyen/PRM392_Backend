@@ -1,4 +1,8 @@
-﻿namespace PRM392_Backend.Domain.Models
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using System.Text.Json.Serialization;
+
+namespace PRM392_Backend.Domain.Models
 {
 	public class Order
 	{
@@ -11,8 +15,27 @@
 		public Guid? StoreLocationID { get; set; }
 		public StoreLocation StoreLocation { get; set; }
 		public DateTime OrderDate { get; set; }
-		public string PaymentMethod { get; set; }
-		public string OrderStatus { get; set; }
 
-	}
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public PaymentMethod PaymentMethod { get; set; }
+
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public OrderStatus OrderStatus { get; set; }
+
+    }
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+     public enum PaymentMethod
+    {
+        VNPay,
+        ZaloPay,
+        PayPal,
+        Momo
+    }
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+     public enum OrderStatus
+    {
+        Processing,
+        Shipped,
+        Delivered
+    }
 }

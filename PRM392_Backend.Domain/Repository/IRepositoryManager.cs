@@ -7,6 +7,7 @@
 		IProductRepository ProductRepository { get; }
 		ICartRepository CartRepository { get; }
 		ICartItemRepository CartItemRepository { get; }
+		IOrderRepository OrderRepository { get; }
 		Task Save();
 	}
 }
