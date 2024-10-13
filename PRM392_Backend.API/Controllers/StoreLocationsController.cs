@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using PRM392_Backend.Domain.Constant;
 using PRM392_Backend.Service.IService;
 using PRM392_Backend.Service.StoreLocations.DTO;
 
@@ -16,6 +18,7 @@ namespace PRM392_Backend.API.Controllers
 		}
 
 		[HttpGet]
+		[Authorize(Roles = Roles.Admin)]
 		public async Task<IActionResult> GetStoreLocations()
 		{
 			var storeLocations = await serviceManager.StoreLocationService.GetAllStoreLocations(trackChange: false);
@@ -23,6 +26,7 @@ namespace PRM392_Backend.API.Controllers
 		}
 
 		[HttpGet("active")]
+		[Authorize(Roles = Roles.Customer)]
 		public async Task<IActionResult> GetActiveStoreLocations()
 		{
 			var activeStoreLocations = await serviceManager.StoreLocationService.GetActiveStoreLocations(trackChange: false);
@@ -30,6 +34,7 @@ namespace PRM392_Backend.API.Controllers
 		}
 
 		[HttpGet("{id:guid}")]
+		[Authorize(Roles = Roles.Customer)]
 		public async Task<IActionResult> GetStoreLocation([FromRoute] Guid id)
 		{
 			var storeLocation = await serviceManager.StoreLocationService.GetStoreLocation(id, trackChange: false);
@@ -41,6 +46,7 @@ namespace PRM392_Backend.API.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = Roles.Admin)]
 		public async Task<IActionResult> CreateStoreLocation([FromBody] StoreLocationForCreationDto storeLocationForCreationDto)
 		{
 			var storeLocation = await serviceManager.StoreLocationService.CreateStoreLocation(storeLocationForCreationDto);
@@ -48,6 +54,7 @@ namespace PRM392_Backend.API.Controllers
 		}
 
 		[HttpPut("{id:guid}")]
+		[Authorize(Roles = Roles.Admin)]
 		public async Task<IActionResult> UpdateStoreLocation([FromRoute] Guid id, [FromBody] StoreLocationForUpdateDto storeLocationForUpdateDto)
 		{
 			await serviceManager.StoreLocationService.UpdateStoreLocation(id, storeLocationForUpdateDto, trackChange: false);

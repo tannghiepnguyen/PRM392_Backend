@@ -40,7 +40,9 @@ namespace PRM392_Backend.API.Controllers
 				return Unauthorized();
 			}
 
-			return Ok(new { Token = serviceManager.AuthenticationService.CreateToken() });
+			var tokenDto = await serviceManager.AuthenticationService.CreateToken(true);
+
+			return Ok(tokenDto);
 		}
 	}
 }

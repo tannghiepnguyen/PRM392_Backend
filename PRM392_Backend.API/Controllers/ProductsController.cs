@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using PRM392_Backend.Domain.Constant;
 using PRM392_Backend.Service.IService;
 using PRM392_Backend.Service.Products.DTO;
 
@@ -16,6 +18,7 @@ namespace PRM392_Backend.API.Controllers
 		}
 
 		[HttpGet]
+		[Authorize(Roles = Roles.Customer)]
 		public async Task<IActionResult> GetProducts()
 		{
 			var products = await serviceManager.ProductService.GetAllProducts(trackChange: false);
@@ -23,6 +26,7 @@ namespace PRM392_Backend.API.Controllers
 		}
 
 		[HttpGet("{id:guid}")]
+		[Authorize(Roles = Roles.Customer)]
 		public async Task<IActionResult> GetProduct([FromRoute] Guid id)
 		{
 			var product = await serviceManager.ProductService.GetProduct(id, trackChange: false);
@@ -30,6 +34,7 @@ namespace PRM392_Backend.API.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = Roles.Admin)]
 		public async Task<IActionResult> CreateProduct([FromForm] ProductForCreationDto productForCreationDto)
 		{
 			var product = await serviceManager.ProductService.CreateProduct(productForCreationDto);
@@ -37,6 +42,7 @@ namespace PRM392_Backend.API.Controllers
 		}
 
 		[HttpGet("active")]
+		[Authorize(Roles = Roles.Customer)]
 		public async Task<IActionResult> GetActiveProducts()
 		{
 			var products = await serviceManager.ProductService.GetActiveProducts(trackChange: false);
@@ -44,6 +50,7 @@ namespace PRM392_Backend.API.Controllers
 		}
 
 		[HttpPut("{id:guid}")]
+		[Authorize(Roles = Roles.Admin)]
 		public async Task<IActionResult> UpdateProduct([FromRoute] Guid id, [FromForm] ProductForUpdateDto productForUpdateDto)
 		{
 			await serviceManager.ProductService.UpdateProduct(id, productForUpdateDto, trackChange: true);

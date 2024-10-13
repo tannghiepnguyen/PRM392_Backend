@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using PRM392_Backend.Domain.Constant;
 using PRM392_Backend.Service.Categories.DTO;
 using PRM392_Backend.Service.IService;
 
@@ -16,6 +18,7 @@ namespace PRM392_Backend.API.Controllers
 		}
 
 		[HttpGet]
+		[Authorize(Roles = Roles.Admin)]
 		public async Task<IActionResult> GetCategories()
 		{
 			var categories = await serviceManager.CategoryService.GetAllCategories(trackChange: false);
@@ -23,6 +26,7 @@ namespace PRM392_Backend.API.Controllers
 		}
 
 		[HttpGet("active")]
+		[Authorize(Roles = Roles.Customer)]
 		public async Task<IActionResult> GetActiveCategories()
 		{
 			var categories = await serviceManager.CategoryService.GetActiveCategories(trackChange: false);
@@ -30,6 +34,7 @@ namespace PRM392_Backend.API.Controllers
 		}
 
 		[HttpGet("{id:guid}")]
+		[Authorize(Roles = Roles.Customer)]
 		public async Task<IActionResult> GetCategory([FromRoute] Guid id)
 		{
 			var category = await serviceManager.CategoryService.GetCategory(id, trackChange: false);
@@ -38,6 +43,7 @@ namespace PRM392_Backend.API.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = Roles.Admin)]
 		public async Task<IActionResult> CreateCategory([FromBody] CategoryForCreationDto categoryForCreationDto)
 		{
 			var category = await serviceManager.CategoryService.CreateCategory(categoryForCreationDto);
@@ -45,6 +51,7 @@ namespace PRM392_Backend.API.Controllers
 		}
 
 		[HttpPut("{id:guid}")]
+		[Authorize(Roles = Roles.Admin)]
 		public async Task<IActionResult> UpdateCategory([FromRoute] Guid id, [FromBody] CategoryForUpdateDto categoryForUpdateDto)
 		{
 			await serviceManager.CategoryService.UpdateCategory(id, categoryForUpdateDto, trackChange: false);
