@@ -10,6 +10,8 @@ namespace PRM392_Backend.Infrastructure.Repository
 		private readonly Lazy<IStoreLocationRepository> storeLocationRepository;
 		private readonly Lazy<IProductRepository> productRepository;
 		private readonly Lazy<ICartRepository> cartRepository;
+		private readonly Lazy<ICartItemRepository> itemRepository;
+		private readonly Lazy<IOrderRepository> orderRepository;
 		public RepositoryManager(DatabaseContext databaseContext)
 		{
 			context = databaseContext;
@@ -17,6 +19,8 @@ namespace PRM392_Backend.Infrastructure.Repository
 			storeLocationRepository = new Lazy<IStoreLocationRepository>(() => new StoreLocationRepository(context));
 			productRepository = new Lazy<IProductRepository>(() => new ProductRepository(context));
 			cartRepository = new Lazy<ICartRepository>(() => new CartRepository(context));
+            itemRepository = new Lazy<ICartItemRepository>(() => new CartItemRepository(context));
+			orderRepository = new Lazy<IOrderRepository>(() => new OrderRepository(context));
 		}
 		public ICategoryRepository CategoryRepository => categoryRepository.Value;
 
@@ -24,6 +28,8 @@ namespace PRM392_Backend.Infrastructure.Repository
 
 		public IProductRepository ProductRepository => productRepository.Value;
 		public ICartRepository CartRepository => cartRepository.Value;
+		public ICartItemRepository CartItemRepository => itemRepository.Value;
+		public IOrderRepository OrderRepository => orderRepository.Value;
 		public async Task Save() => await context.SaveChangesAsync();
 	}
 }

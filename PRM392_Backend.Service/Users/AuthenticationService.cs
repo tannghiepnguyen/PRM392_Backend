@@ -129,6 +129,7 @@ namespace PRM392_Backend.Service.Users
 			}
 			claims.Add(new Claim("Fullname", user.FullName));
 			claims.Add(new Claim("Id", user.Id));
+			claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id));
 			claims.Add(new Claim("Email", user.Email));
 			claims.Add(new Claim("PhoneNumber", user.PhoneNumber));
 			return claims;

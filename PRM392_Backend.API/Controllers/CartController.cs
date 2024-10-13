@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PRM392_Backend.Domain.Models;
 using PRM392_Backend.Service.Carts;
+using PRM392_Backend.Service.Carts.DTO;
 using PRM392_Backend.Service.IService;
 
 namespace PRM392_Backend.API.Controllers
@@ -84,19 +86,19 @@ namespace PRM392_Backend.API.Controllers
         /// <param name="cart">Đối tượng giỏ hàng cần tạo.</param>
         /// <returns>Giỏ hàng đã được tạo.</returns>
         [HttpPost]
-        public async Task<IActionResult> CreateCart([FromBody] Cart cart)
+     
+        public async Task<IActionResult> CreateCart([FromBody] CartRequestDTO cart)
         {
             if (cart == null)
                 return BadRequest("Giỏ hàng không được để trống.");
 
             // Kiểm tra các thuộc tính bắt buộc
-            if (string.IsNullOrEmpty(cart.UserID))
-                return BadRequest("UserID không được để trống.");
+          
 
             try
             {
                 await serviceManager.CartService.CreateCartAsync(cart);
-                return CreatedAtAction(nameof(GetCartById), new { id = cart.ID }, cart);
+                return Ok();
             }
             catch (Exception ex)
             {

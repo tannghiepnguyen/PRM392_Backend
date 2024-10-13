@@ -1,8 +1,13 @@
-﻿using PRM392_Backend.Domain.Models;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using PRM392_Backend.Domain.Models;
 using PRM392_Backend.Domain.Repository;
+using PRM392_Backend.Service.Carts.DTO;
+using PRM392_Backend.Service.Products.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,10 +16,14 @@ namespace PRM392_Backend.Service.Carts
     public class CartService : ICartService
     {
         private readonly IRepositoryManager repositoryManager;
-
-        public CartService(IRepositoryManager repositoryManager)
+        private readonly IMapper mapper;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public CartService(IRepositoryManager repositoryManager,IMapper mapper,IHttpContextAccessor httpContextAccessor)
         {
            this.repositoryManager = repositoryManager;
+            this.mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
+
         }
 
         /// <summary>
@@ -52,9 +61,41 @@ namespace PRM392_Backend.Service.Carts
         /// Tạo một giỏ hàng mới.
         /// </summary>
         /// <param name="cart">Đối tượng giỏ hàng cần tạo.</param>
-        public async Task CreateCartAsync(Cart cart)
+        public async Task CreateCartAsync(CartRequestDTO cart)
         {
-            repositoryManager.CartRepository.CreateCart(cart);
+            Cart cartFinal = new Cart
+            {
+                UserID = cart.userId.ToString(),
+                Status = CartStatus.Unpaid.ToString(),
+                IsActive = true,
+                TotalPrice =0.0,
+            };
+            //var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            repositoryManager.CartRepository.CreateCart(cartFinal);
+            await repositoryManager.Save(); 
+                    var total = 0.0;
+            if (cart == null)
+            {
+                throw new ArgumentNullException(nameof(cart), "Cart cannot be null.");
+            }
+
+            if (cart.Items == null || !cart.Items.Any())
+            {
+                throw new ArgumentException("Cart must contain at least one item.", nameof(cart.Items));
+            }
+            foreach (var item in cart.Items)
+            {
+                var product = await repositoryManager.ProductRepository.GetProductById(item.ProductID,true);
+                CartItem cartItem = mapper.Map<CartItem>(item);
+                cartItem.CartID = cartFinal.ID;
+                cartItem.Price = product.Price * cartItem.Quantity;
+                total += cartItem.Price;
+                repositoryManager.CartItemRepository.CreateCartItem(cartItem);
+                await repositoryManager.Save();
+            }
+            cartFinal.TotalPrice = total;
+            
+            repositoryManager.CartRepository.UpdateCart(cartFinal);
             await repositoryManager.Save();
         }
 

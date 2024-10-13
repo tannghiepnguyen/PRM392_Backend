@@ -2,7 +2,7 @@
 {
 	public class CartItem
 	{
-		public Guid ID { get; set; }
+		public Guid ID { get; set; } 
 		public Guid? CartID { get; set; }
 		public Cart Cart { get; set; }
 		public Guid? ProductID { get; set; }

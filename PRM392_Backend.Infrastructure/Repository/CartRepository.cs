@@ -28,15 +28,19 @@ namespace PRM392_Backend.Infrastructure.Repository
         /// <param name="trackChange">Có theo dõi thay đổi hay không.</param>
         /// <returns>Danh sách các giỏ hàng.</returns>
         public async Task<IEnumerable<Cart>> GetCarts(bool trackChange) =>
-            await FindAll(trackChange).ToListAsync();
-
+             await FindAll(trackChange)
+          .Include(cart => cart.CartItems) // Tải CartItems
+          .ThenInclude(cartItem => cartItem.Product) // Tải Product của từng CartItem
+          .ToListAsync();
         /// <summary>
         /// Lấy các giỏ hàng đang hoạt động.
         /// </summary>
         /// <param name="trackChange">Có theo dõi thay đổi hay không.</param>
         /// <returns>Danh sách các giỏ hàng hoạt động.</returns>
         public async Task<IEnumerable<Cart>> GetActiveCarts(bool trackChange) =>
-            await FindByCondition(x => x.IsActive, trackChange).ToListAsync();
+            await FindByCondition(x => x.IsActive, trackChange).Include(cart => cart.CartItems) // Tải CartItems
+          .ThenInclude(cartItem => cartItem.Product) // Tải Product của từng CartItem
+          .ToListAsync();
 
         /// <summary>
         /// Lấy giỏ hàng theo ID.
@@ -44,8 +48,9 @@ namespace PRM392_Backend.Infrastructure.Repository
         /// <param name="id">ID của giỏ hàng.</param>
         /// <param name="trackChange">Có theo dõi thay đổi hay không.</param>
         /// <returns>Đối tượng giỏ hàng hoặc null nếu không tìm thấy.</returns>
-        public async Task<Cart?> GetCartById(Guid id, bool trackChange) =>
-            await FindByCondition(x => x.ID == id, trackChange).SingleOrDefaultAsync();
+        public async Task<Cart?> GetCartById(Guid? id, bool trackChange) =>
+            await FindByCondition(x => x.ID == id, trackChange).Include(cart => cart.CartItems) // Tải CartItems
+          .ThenInclude(cartItem => cartItem.Product).SingleOrDefaultAsync();
 
         /// <summary>
         /// Cập nhật thông tin giỏ hàng.

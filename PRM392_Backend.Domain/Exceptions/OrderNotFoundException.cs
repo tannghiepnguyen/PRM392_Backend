@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace PRM392_Backend.Domain.Exceptions
 {
-    public class CartNotFoundException : NotFoundException
+    public class OrderNotFoundException : NotFoundException
     {
-        public CartNotFoundException(Guid cartId) : base($"The cart with id: {cartId} doesn't exist in the database")
+        public OrderNotFoundException(Guid orderId) : base($"The order with id: {orderId} doesn't exist in the database")
         {
         }
     }

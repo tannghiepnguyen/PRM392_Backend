@@ -1,4 +1,5 @@
 ﻿using PRM392_Backend.Domain.Models;
+using PRM392_Backend.Service.Carts.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace PRM392_Backend.Service.Carts
         Task<IEnumerable<Cart>> GetAllCartsAsync(bool trackChange = false);
         Task<IEnumerable<Cart>> GetActiveCartsAsync(bool trackChange = false);
         Task<Cart?> GetCartByIdAsync(Guid id, bool trackChange = false);
-        Task CreateCartAsync(Cart cart);
+        Task CreateCartAsync(CartRequestDTO cart);
         Task UpdateCartAsync(Cart cart);
         Task DeleteCartAsync(Guid id, bool trackChange = false);
         Task HardDeleteCartAsync(Guid id, bool trackChange = false);
