@@ -8,6 +8,7 @@ using PRM392_Backend.Service.CartItems.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,14 +18,16 @@ namespace PRM392_Backend.Service.CartItems
     {
         private readonly IRepositoryManager repositoryManager;
         private readonly IMapper mapper;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CartItemService(IRepositoryManager repositoryManager, IMapper mapper)
+        public CartItemService(IRepositoryManager repositoryManager, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             this.repositoryManager = repositoryManager;
             this.mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-      
+
 
         public async Task<IEnumerable<CartItem>> GetAllCartItems(bool trackChange)
         {
@@ -46,12 +49,19 @@ namespace PRM392_Backend.Service.CartItems
         }
         public async Task DeleteCartItem(Guid id, bool trackChange)
         {
+           
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var cartItem = await repositoryManager.CartItemRepository.GetCartItemById(id, trackChange);
+            var cart = await repositoryManager.CartRepository.GetCartById(cartItem.CartID, trackChange);
+            if(cart.UserID != userId)
+            {
+                throw new InvalidOperationException("You don't have permission to update the quantity of this item.");
+            }
             if (cartItem == null) throw new CartItemNotFoundException(id);
             var total = 0.0;
             repositoryManager.CartItemRepository.HardDeleteCartItem(id, trackChange);
             await repositoryManager.Save();
-            var cart = await repositoryManager.CartRepository.GetCartById(cartItem.CartID, trackChange);
+          
             if(cart.CartItems.Count == 0)
             {
                 cart.IsActive = false;
@@ -68,7 +78,8 @@ namespace PRM392_Backend.Service.CartItems
       
         public async Task UpdateQuantityCartItem(CartItemForUpdateDTO cartItem)
         {
-            
+
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var total = 0.0;
             var cartItemExist = await repositoryManager.CartItemRepository.GetCartItemById(cartItem.ID, true);
             if (cartItemExist == null) throw new CartItemNotFoundException(cartItem.ID);
@@ -76,7 +87,7 @@ namespace PRM392_Backend.Service.CartItems
             repositoryManager.CartItemRepository.UpdateCartItem(cartItemExist);
             await repositoryManager.Save();
             var cart = await repositoryManager.CartRepository.GetCartById(cartItemExist.CartID,true);
-            if (cart.UserID != cartItem.UserID.ToString())
+            if (cart.UserID != userId)
             {
                 throw new InvalidOperationException("You don't have permission to update the quantity of this item.");
             }

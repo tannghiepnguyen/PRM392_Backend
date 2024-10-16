@@ -31,7 +31,7 @@ namespace PRM392_Backend.Service.Service
 			storeLocationService = new Lazy<IStoreLocationService>(() => new StoreLocationService(repositoryManager, mapper));
 			productService = new Lazy<IProductService>(() => new ProductService(repositoryManager, mapper, blobService));
 			cartService = new Lazy<ICartService>(()=> new CartService(repositoryManager,mapper,_httpContextAccessor));
-			cartItemService = new Lazy<ICartItemService>(() => new CartItemService(repositoryManager, mapper));
+			cartItemService = new Lazy<ICartItemService>(() => new CartItemService(repositoryManager, mapper,_httpContextAccessor));
 			orderService = new Lazy<IOrderService>(() => new OrderService(repositoryManager, mapper));	
 		}
 		public IAuthenticationService AuthenticationService => authenticationService.Value;

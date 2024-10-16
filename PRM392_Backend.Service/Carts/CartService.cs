@@ -63,14 +63,15 @@ namespace PRM392_Backend.Service.Carts
         /// <param name="cart">Đối tượng giỏ hàng cần tạo.</param>
         public async Task CreateCartAsync(CartRequestDTO cart)
         {
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             Cart cartFinal = new Cart
             {
-                UserID = cart.userId.ToString(),
+                UserID = userId,
                 Status = CartStatus.Unpaid.ToString(),
                 IsActive = true,
                 TotalPrice =0.0,
             };
-            //var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            
             repositoryManager.CartRepository.CreateCart(cartFinal);
             await repositoryManager.Save(); 
                     var total = 0.0;

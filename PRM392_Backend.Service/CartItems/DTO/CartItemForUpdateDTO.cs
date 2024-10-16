@@ -10,6 +10,6 @@ namespace PRM392_Backend.Service.CartItems.DTO
     {
         public Guid ID { get; set; }
         public int Quantity { get; set; }
-        public Guid UserID { get; set; }
+      
     }
 }

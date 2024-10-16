@@ -15,7 +15,7 @@ namespace PRM392_Backend.Service.Carts.DTO
     }
     public class CartRequestDTO
     {
-        public Guid? userId { get; set; }
+      
         public List<CartItemRequestDTO> Items { get; set; }
     }
 }
