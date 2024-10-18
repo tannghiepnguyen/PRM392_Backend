@@ -2,7 +2,7 @@
 {
 	public class ChatMessage : ISoftDelete
 	{
-		public Guid ID { get; set; }
+		public Guid ID { get; set; } = Guid.NewGuid();
 		public string? UserID { get; set; }
 		public User User { get; set; }
 		public string Message { get; set; }

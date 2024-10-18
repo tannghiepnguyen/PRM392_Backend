@@ -8,6 +8,7 @@
 		ICartRepository CartRepository { get; }
 		ICartItemRepository CartItemRepository { get; }
 		IOrderRepository OrderRepository { get; }
+		IChatMessageRepository ChatMessageRepository { get; }
 		Task Save();
 	}
 }

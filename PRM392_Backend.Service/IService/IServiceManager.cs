@@ -1,6 +1,7 @@
 ﻿using PRM392_Backend.Service.CartItems;
 using PRM392_Backend.Service.Carts;
 using PRM392_Backend.Service.Categories;
+using PRM392_Backend.Service.ChatMessages;
 using PRM392_Backend.Service.Orders;
 using PRM392_Backend.Service.Products;
 using PRM392_Backend.Service.StoreLocations;
@@ -17,5 +18,6 @@ namespace PRM392_Backend.Service.IService
 		ICartService CartService { get; }
 		ICartItemService CartItemService { get; }
 		IOrderService OrderService { get; }
+		IChatMessageService ChatMessageService { get; }
 	}
 }

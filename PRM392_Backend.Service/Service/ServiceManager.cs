@@ -7,6 +7,7 @@ using PRM392_Backend.Domain.Repository;
 using PRM392_Backend.Service.CartItems;
 using PRM392_Backend.Service.Carts;
 using PRM392_Backend.Service.Categories;
+using PRM392_Backend.Service.ChatMessages;
 using PRM392_Backend.Service.IService;
 using PRM392_Backend.Service.Orders;
 using PRM392_Backend.Service.Products;
@@ -24,6 +25,7 @@ namespace PRM392_Backend.Service.Service
 		private readonly Lazy<ICartService> cartService;
 		private readonly Lazy<ICartItemService> cartItemService;
 		private readonly Lazy<IOrderService> orderService;
+		private readonly Lazy<IChatMessageService> chatMessageService;
 		public ServiceManager(IRepositoryManager repositoryManager, UserManager<User> userManager, IConfiguration configuration, IMapper mapper, IBlobService blobService, IHttpContextAccessor _httpContextAccessor)
 		{
 			authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(userManager, mapper, configuration));
@@ -33,6 +35,7 @@ namespace PRM392_Backend.Service.Service
 			cartService = new Lazy<ICartService>(()=> new CartService(repositoryManager,mapper,_httpContextAccessor));
 			cartItemService = new Lazy<ICartItemService>(() => new CartItemService(repositoryManager, mapper,_httpContextAccessor));
 			orderService = new Lazy<IOrderService>(() => new OrderService(repositoryManager, mapper));	
+			chatMessageService = new Lazy<IChatMessageService>(()=> new ChatMessageService(repositoryManager, mapper,_httpContextAccessor));	
 		}
 		public IAuthenticationService AuthenticationService => authenticationService.Value;
 
@@ -44,5 +47,6 @@ namespace PRM392_Backend.Service.Service
 		public ICartService CartService => cartService.Value;
 		public ICartItemService CartItemService => cartItemService.Value;	
 		public IOrderService OrderService => orderService.Value;
+		public IChatMessageService ChatMessageService => chatMessageService.Value;
 	}
 }
