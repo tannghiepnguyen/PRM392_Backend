@@ -17,7 +17,7 @@ namespace PRM392_Backend.Infrastructure.Repository
 
 		public async Task<PagedList<Product>> GetActiveProducts(ProductParameters productParameters, bool trackChange)
 		{
-			var products = productParameters.CategoryId == Guid.Empty ? await FindByCondition(p => p.IsActive, trackChange).OrderBy(c => c.ProductName).ToListAsync() : await FindByCondition(p => p.IsActive && p.CategoryId == productParameters.CategoryId, trackChange).OrderBy(c => c.ProductName).ToListAsync();
+			var products = productParameters.CategoryId == Guid.Empty ? FindByCondition(p => p.IsActive, trackChange).OrderBy(c => c.ProductName) : FindByCondition(p => p.IsActive && p.CategoryId == productParameters.CategoryId, trackChange).OrderBy(c => c.ProductName);
 
 			return PagedList<Product>.ToPagedList(products, productParameters.PageNumber, productParameters.PageSize);
 		}
@@ -26,7 +26,7 @@ namespace PRM392_Backend.Infrastructure.Repository
 
 		public async Task<PagedList<Product>> GetProducts(ProductParameters productParameters, bool trackChange)
 		{
-			var products = productParameters.CategoryId == Guid.Empty ? await FindAll(trackChange).OrderBy(c => c.ProductName).ToListAsync() : await FindAll(trackChange).Where(p => p.CategoryId == productParameters.CategoryId).OrderBy(c => c.ProductName).ToListAsync();
+			var products = productParameters.CategoryId == Guid.Empty ? FindAll(trackChange).OrderBy(c => c.ProductName) : FindAll(trackChange).Where(p => p.CategoryId == productParameters.CategoryId).OrderBy(c => c.ProductName);
 
 			return PagedList<Product>.ToPagedList(products, productParameters.PageNumber, productParameters.PageSize);
 		}
