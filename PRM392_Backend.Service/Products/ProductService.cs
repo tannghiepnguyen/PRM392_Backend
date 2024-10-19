@@ -2,6 +2,8 @@
 using PRM392_Backend.Domain.Constant;
 using PRM392_Backend.Domain.Exceptions;
 using PRM392_Backend.Domain.Models;
+using PRM392_Backend.Domain.PagedList;
+using PRM392_Backend.Domain.Parameters;
 using PRM392_Backend.Domain.Repository;
 using PRM392_Backend.Service.IService;
 using PRM392_Backend.Service.Products.DTO;
@@ -42,16 +44,18 @@ namespace PRM392_Backend.Service.Products
 			return mapper.Map<ProductForReturnDto>(product);
 		}
 
-		public async Task<IEnumerable<ProductForReturnDto>> GetActiveProducts(bool trackChange)
+		public async Task<(IEnumerable<ProductForReturnDto> products, MetaData metaData)> GetActiveProducts(ProductParameters productParameters, bool trackChange)
 		{
-			var activeProducts = await repositoryManager.ProductRepository.GetActiveProducts(trackChange);
-			return mapper.Map<IEnumerable<ProductForReturnDto>>(activeProducts);
+			var productsWithMetadata = await repositoryManager.ProductRepository.GetActiveProducts(productParameters, trackChange);
+			var productsReturnDto = mapper.Map<IEnumerable<ProductForReturnDto>>(productsWithMetadata);
+			return (productsReturnDto, productsWithMetadata.MetaData);
 		}
 
-		public async Task<IEnumerable<ProductForReturnDto>> GetAllProducts(bool trackChange)
+		public async Task<(IEnumerable<ProductForReturnDto> products, MetaData metaData)> GetAllProducts(ProductParameters productParameters, bool trackChange)
 		{
-			var products = await repositoryManager.ProductRepository.GetProducts(trackChange);
-			return mapper.Map<IEnumerable<ProductForReturnDto>>(products);
+			var productsWithMetadata = await repositoryManager.ProductRepository.GetProducts(productParameters, trackChange);
+			var productsReturnDto = mapper.Map<IEnumerable<ProductForReturnDto>>(productsWithMetadata);
+			return (productsReturnDto, productsWithMetadata.MetaData);
 		}
 
 		public async Task<ProductForReturnDto?> GetProduct(Guid id, bool trackChange)
@@ -60,14 +64,6 @@ namespace PRM392_Backend.Service.Products
 			if (product == null) throw new ProductNotFoundException(id);
 
 			return mapper.Map<ProductForReturnDto>(product);
-		}
-
-		public async Task<IEnumerable<ProductForReturnDto>> GetProductsByCategory(Guid categoryId, bool trackChange)
-		{
-			await CheckIfCategoryExists(categoryId);
-
-			var products = await repositoryManager.ProductRepository.GetProductsByCategory(categoryId, trackChange);
-			return mapper.Map<IEnumerable<ProductForReturnDto>>(products);
 		}
 
 		public async Task UpdateProduct(Guid id, ProductForUpdateDto productForUpdateDto, bool trackChange)

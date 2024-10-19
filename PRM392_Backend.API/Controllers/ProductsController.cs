@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PRM392_Backend.Domain.Constant;
+using PRM392_Backend.Domain.Parameters;
 using PRM392_Backend.Service.IService;
 using PRM392_Backend.Service.Products.DTO;
+using System.Text.Json;
 
 namespace PRM392_Backend.API.Controllers
 {
@@ -18,11 +20,12 @@ namespace PRM392_Backend.API.Controllers
 		}
 
 		[HttpGet]
-		[Authorize(Roles = Roles.Customer)]
-		public async Task<IActionResult> GetProducts()
+		[Authorize(Roles = Roles.Admin)]
+		public async Task<IActionResult> GetProducts([FromQuery] ProductParameters productParameters)
 		{
-			var products = await serviceManager.ProductService.GetAllProducts(trackChange: false);
-			return Ok(products);
+			var pagedResult = await serviceManager.ProductService.GetAllProducts(productParameters, trackChange: false);
+			Response.Headers.Append("X-Pagination", JsonSerializer.Serialize(pagedResult.metaData));
+			return Ok(pagedResult.products);
 		}
 
 		[HttpGet("{id:guid}")]
@@ -43,10 +46,11 @@ namespace PRM392_Backend.API.Controllers
 
 		[HttpGet("active")]
 		[Authorize(Roles = Roles.Customer)]
-		public async Task<IActionResult> GetActiveProducts()
+		public async Task<IActionResult> GetActiveProducts([FromQuery] ProductParameters productParameters)
 		{
-			var products = await serviceManager.ProductService.GetActiveProducts(trackChange: false);
-			return Ok(products);
+			var pagedResult = await serviceManager.ProductService.GetActiveProducts(productParameters, trackChange: false);
+			Response.Headers.Append("X-Pagination", JsonSerializer.Serialize(pagedResult.metaData));
+			return Ok(pagedResult.products);
 		}
 
 		[HttpPut("{id:guid}")]
