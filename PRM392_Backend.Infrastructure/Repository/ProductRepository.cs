@@ -17,7 +17,17 @@ namespace PRM392_Backend.Infrastructure.Repository
 
 		public async Task<PagedList<Product>> GetActiveProducts(ProductParameters productParameters, bool trackChange)
 		{
-			var products = productParameters.CategoryId == Guid.Empty ? FindByCondition(p => p.IsActive, trackChange).OrderBy(c => c.ProductName) : FindByCondition(p => p.IsActive && p.CategoryId == productParameters.CategoryId, trackChange).OrderBy(c => c.ProductName);
+			var products = FindByCondition(p => p.IsActive, trackChange);
+			if (productParameters.CategoryId != Guid.Empty)
+			{
+				products = products.Where(p => p.CategoryId == productParameters.CategoryId);
+			}
+			if (!string.IsNullOrEmpty(productParameters.SearchTerm))
+			{
+				var lowerCaseTerm = productParameters.SearchTerm.Trim().ToLower();
+				products = products.Where(p => p.ProductName.ToLower().Contains(lowerCaseTerm));
+			}
+			products = products.OrderBy(c => c.ProductName);
 
 			return PagedList<Product>.ToPagedList(products, productParameters.PageNumber, productParameters.PageSize);
 		}
@@ -26,7 +36,17 @@ namespace PRM392_Backend.Infrastructure.Repository
 
 		public async Task<PagedList<Product>> GetProducts(ProductParameters productParameters, bool trackChange)
 		{
-			var products = productParameters.CategoryId == Guid.Empty ? FindAll(trackChange).OrderBy(c => c.ProductName) : FindAll(trackChange).Where(p => p.CategoryId == productParameters.CategoryId).OrderBy(c => c.ProductName);
+			var products = FindAll(trackChange);
+			if (productParameters.CategoryId != Guid.Empty)
+			{
+				products = products.Where(p => p.CategoryId == productParameters.CategoryId);
+			}
+			if (!string.IsNullOrEmpty(productParameters.SearchTerm))
+			{
+				var lowerCaseTerm = productParameters.SearchTerm.Trim().ToLower();
+				products = products.Where(p => p.ProductName.ToLower().Contains(lowerCaseTerm));
+			}
+			products = products.OrderBy(c => c.ProductName);
 
 			return PagedList<Product>.ToPagedList(products, productParameters.PageNumber, productParameters.PageSize);
 		}
