@@ -161,9 +161,7 @@ namespace PRM392_Backend.Service.Users
 		{
 			user = await userManager.FindByNameAsync(userForAuthentication.UserName);
 
-			var result = (user != null && await userManager.CheckPasswordAsync(user, userForAuthentication.Password));
-
-			return result;
+			return (user != null && await userManager.CheckPasswordAsync(user, userForAuthentication.Password) && user.IsActive);
 		}
 
 		public async Task<IdentityResult> UpdateUser(string userId, UserForUpdateDto userForUpdateDto)
