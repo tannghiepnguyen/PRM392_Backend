@@ -33,7 +33,8 @@ namespace PRM392_Backend.Service.Carts
         /// <returns>Danh sách các giỏ hàng.</returns>
         public async Task<IEnumerable<Cart>> GetAllCartsAsync(bool trackChange = false)
         {
-            return await repositoryManager.CartRepository.GetCarts(trackChange);
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return await repositoryManager.CartRepository.GetCarts(userId,trackChange);
         }
 
         /// <summary>
@@ -43,7 +44,8 @@ namespace PRM392_Backend.Service.Carts
         /// <returns>Danh sách các giỏ hàng hoạt động.</returns>
         public async Task<IEnumerable<Cart>> GetActiveCartsAsync(bool trackChange = false)
         {
-            return await repositoryManager.CartRepository.GetActiveCarts(trackChange);
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return await repositoryManager.CartRepository.GetActiveCarts(userId,trackChange);
         }
 
         /// <summary>

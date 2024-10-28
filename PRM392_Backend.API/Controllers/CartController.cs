@@ -24,6 +24,7 @@ namespace PRM392_Backend.API.Controllers
         /// </summary>
         /// <returns>Danh sách các giỏ hàng.</returns>
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllCarts()
         {
             try
@@ -43,6 +44,7 @@ namespace PRM392_Backend.API.Controllers
         /// </summary>
         /// <returns>Danh sách các giỏ hàng hoạt động.</returns>
         [HttpGet("active")]
+        [Authorize]
         public async Task<IActionResult> GetActiveCarts()
         {
             try

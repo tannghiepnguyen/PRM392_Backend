@@ -27,20 +27,23 @@ namespace PRM392_Backend.Infrastructure.Repository
         /// </summary>
         /// <param name="trackChange">Có theo dõi thay đổi hay không.</param>
         /// <returns>Danh sách các giỏ hàng.</returns>
-        public async Task<IEnumerable<Cart>> GetCarts(bool trackChange) =>
-             await FindAll(trackChange)
-          .Include(cart => cart.CartItems) // Tải CartItems
-          .ThenInclude(cartItem => cartItem.Product) // Tải Product của từng CartItem
-          .ToListAsync();
+        public async Task<IEnumerable<Cart>> GetCarts(string accountID, bool trackChange) =>
+            await FindByCondition(cart => cart.UserID == accountID.ToString(), trackChange)
+                .Include(cart => cart.CartItems) // Tải CartItems
+                .ThenInclude(cartItem => cartItem.Product) // Tải Product của từng CartItem
+                .ToListAsync();
+
         /// <summary>
-        /// Lấy các giỏ hàng đang hoạt động.
+        /// Lấy các giỏ hàng đang hoạt động theo accountID.
         /// </summary>
+        /// <param name="accountID">ID của tài khoản cần lọc giỏ hàng.</param>
         /// <param name="trackChange">Có theo dõi thay đổi hay không.</param>
         /// <returns>Danh sách các giỏ hàng hoạt động.</returns>
-        public async Task<IEnumerable<Cart>> GetActiveCarts(bool trackChange) =>
-            await FindByCondition(x => x.IsActive, trackChange).Include(cart => cart.CartItems) // Tải CartItems
-          .ThenInclude(cartItem => cartItem.Product) // Tải Product của từng CartItem
-          .ToListAsync();
+        public async Task<IEnumerable<Cart>> GetActiveCarts(string accountID, bool trackChange) =>
+            await FindByCondition(cart => cart.IsActive && cart.UserID == accountID.ToString(), trackChange)
+                .Include(cart => cart.CartItems) // Tải CartItems
+                .ThenInclude(cartItem => cartItem.Product) // Tải Product của từng CartItem
+                .ToListAsync();
 
         /// <summary>
         /// Lấy giỏ hàng theo ID.

@@ -20,7 +20,7 @@ namespace PRM392_Backend.API.Controllers
 
 
         // GET: api/CartItems
-        [HttpGet]
+            [HttpGet]
             public async Task<IActionResult> GetAllCartItems()
             {
                 var cartItems = await serviceManager.CartItemService.GetAllCartItems(true);
