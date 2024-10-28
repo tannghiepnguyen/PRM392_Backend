@@ -37,6 +37,7 @@ namespace PRM392_Backend.Domain.Models
     {
         Processing,
         Shipped,
-        Delivered
+        Delivered,
+        Cancel
     }
 }

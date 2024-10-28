@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PRM392_Backend.Domain.Exceptions;
 using PRM392_Backend.Domain.Models;
 using PRM392_Backend.Service.IService;
@@ -21,12 +22,21 @@ namespace PRM392_Backend.API.Controllers
 
 
         // GET: api/Orders
-        [HttpGet]
-        public async Task<IActionResult> GetOrders([FromQuery] bool trackChange)
+        [HttpGet("Processing")]
+        [Authorize]
+        public async Task<IActionResult> GetOrder([FromQuery] bool trackChange)
         {
-            var orders = await serviceManager.OrderService.GetOrders(trackChange);
+            var orders = await serviceManager.OrderService.GetOrdersByStatus(OrderStatus.Processing,trackChange);
             return Ok(orders);
         }
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetAllOrder([FromQuery] bool trackChange)
+        {
+            var orders = await serviceManager.OrderService.GetAllOrders(trackChange);
+            return Ok(orders);
+        }
+
 
         // GET: api/Orders/{id}
         [HttpGet("{id}")]

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using PRM392_Backend.Domain.Exceptions;
 using PRM392_Backend.Domain.Models;
 using PRM392_Backend.Domain.Repository;
@@ -6,6 +7,7 @@ using PRM392_Backend.Service.Orders.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,29 +18,41 @@ namespace PRM392_Backend.Service.Orders
     {
         private readonly IRepositoryManager repositoryManager;
         private readonly IMapper mapper;
-
-        public OrderService(IRepositoryManager repositoryManager, IMapper mapper)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public OrderService(IRepositoryManager repositoryManager, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             this.repositoryManager = repositoryManager;
             this.mapper = mapper;
+            this._httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IEnumerable<Order>> GetOrders(bool trackChange)
+        public async Task<IEnumerable<Order>> GetOrdersByStatus (OrderStatus orderStatus,bool trackChange)
         {
-            var orders = await repositoryManager.OrderRepository.GetOrders(trackChange);
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var orders = await repositoryManager.OrderRepository.GetOrdersByStatusAndUserID(userId,orderStatus.ToString(),false);
+            return orders;
+        }
+        public async Task<IEnumerable<Order>> GetAllOrders(bool trackChange)
+        {
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var orders = await repositoryManager.OrderRepository.GetOrdersByAccountID(userId, false);
             return orders;
         }
 
+
         public async Task<Order?> GetOrder(Guid id, bool trackChange)
         {
-            var order = await repositoryManager.OrderRepository.GetOrderById(id, trackChange);
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var order = await repositoryManager.OrderRepository.GetOrderByIdAndUserId(id,userId, trackChange);
             if (order == null) throw new OrderNotFoundException(id);
             return order;
         }
 
         public async Task<Order> CreateOrder(OrderRequestForCreate orderDTO)
         {
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             Order order= mapper.Map<Order>(orderDTO);
+            order.UserID = userId;
             order.OrderStatus = OrderStatus.Processing.ToString() ;
             order.PaymentMethod = orderDTO.PaymentMethod.ToString() ;
             var cartExist = await repositoryManager.CartRepository.GetCartById(order.CartID,true);

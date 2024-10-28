@@ -10,7 +10,10 @@ namespace PRM392_Backend.Domain.Repository
     public interface IOrderRepository
     {
         Task<IEnumerable<Order>> GetOrders(bool trackChange);
+        Task<IEnumerable<Order>> GetOrdersByAccountID(string accountID, bool trackChange);
         Task<Order?> GetOrderById(Guid id, bool trackChange);
+        Task<IEnumerable<Order>> GetOrdersByStatusAndUserID(string status, string UserId, bool trackChange);
+        Task<Order?> GetOrderByIdAndUserId(Guid id, string userId, bool trackChange);
         void CreateOrder(Order order);
         void UpdateOrder(Order order);
         void DeleteOrder(Order order);

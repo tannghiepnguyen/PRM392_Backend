@@ -34,7 +34,7 @@ namespace PRM392_Backend.Service.Service
 			productService = new Lazy<IProductService>(() => new ProductService(repositoryManager, mapper, blobService));
 			cartService = new Lazy<ICartService>(()=> new CartService(repositoryManager,mapper,_httpContextAccessor));
 			cartItemService = new Lazy<ICartItemService>(() => new CartItemService(repositoryManager, mapper,_httpContextAccessor));
-			orderService = new Lazy<IOrderService>(() => new OrderService(repositoryManager, mapper));	
+			orderService = new Lazy<IOrderService>(() => new OrderService(repositoryManager, mapper, _httpContextAccessor));	
 			chatMessageService = new Lazy<IChatMessageService>(()=> new ChatMessageService(repositoryManager, mapper,_httpContextAccessor));	
 		}
 		public IAuthenticationService AuthenticationService => authenticationService.Value;
