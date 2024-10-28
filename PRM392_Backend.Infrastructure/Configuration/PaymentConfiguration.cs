@@ -9,10 +9,10 @@ namespace PRM392_Backend.Infrastructure.Configuration
 		public void Configure(EntityTypeBuilder<Payment> builder)
 		{
 			builder.HasKey(p => p.ID);
+			builder.Property(p => p.OrderID).IsRequired();
 			builder.Property(p => p.Amount).IsRequired();
 			builder.Property(p => p.PaymentDate).IsRequired();
-			builder.Property(p => p.PaymentStatus).IsRequired();
-			builder.HasOne(p => p.Order).WithOne(o => o.Payment).HasForeignKey<Payment>(p => p.OrderID);
+			builder.Property(p => p.PaymentStatus).IsRequired().HasMaxLength(50);
 		}
 	}
 }
