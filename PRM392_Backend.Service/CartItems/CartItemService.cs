@@ -83,22 +83,42 @@ namespace PRM392_Backend.Service.CartItems
             var total = 0.0;
             var cartItemExist = await repositoryManager.CartItemRepository.GetCartItemById(cartItem.ID, true);
             if (cartItemExist == null) throw new CartItemNotFoundException(cartItem.ID);
-            cartItemExist.Quantity = cartItem.Quantity;
-            repositoryManager.CartItemRepository.UpdateCartItem(cartItemExist);
-            await repositoryManager.Save();
-            var cart = await repositoryManager.CartRepository.GetCartById(cartItemExist.CartID,true);
+            if(cartItem.Quantity == 0)
+            {
+                repositoryManager.CartItemRepository.HardDeleteCartItem(cartItemExist.ID,true);
+                await repositoryManager.Save();
+            }
+            else
+            {
+                cartItemExist.Quantity = cartItem.Quantity;
+                repositoryManager.CartItemRepository.UpdateCartItem(cartItemExist);
+                await repositoryManager.Save();
+            }
+            var cart = await repositoryManager.CartRepository.GetCartById(cartItemExist.CartID, true);
             if (cart.UserID != userId)
             {
                 throw new InvalidOperationException("You don't have permission to update the quantity of this item.");
             }
 
-            foreach (var item in cart.CartItems)
+           if(cart.CartItems.Count == 0)
+           {
+                repositoryManager.CartRepository.HardDeleteCart(cart.ID,true);
+                await repositoryManager.Save();
+           }
+            else
             {
-                total += item.Quantity * item.Price;
+                foreach (var item in cart.CartItems)
+                {
+                    if (item.ProductID.HasValue)
+                    {
+                        var product = await repositoryManager.ProductRepository.GetProductById(item.ProductID.Value, true);
+                        total += item.Quantity * product.Price;
+                    }
+                }
+                cart.TotalPrice = total;
+                repositoryManager.CartRepository.UpdateCart(cart);
+                await repositoryManager.Save();
             }
-            cart.TotalPrice = total;
-            repositoryManager.CartRepository.UpdateCart(cart);
-            await repositoryManager.Save();
         }
     }
 }

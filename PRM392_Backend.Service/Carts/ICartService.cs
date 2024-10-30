@@ -14,7 +14,7 @@ namespace PRM392_Backend.Service.Carts
         Task<IEnumerable<Cart>> GetActiveCartsAsync(bool trackChange = false);
         Task<Cart?> GetCartByIdAsync(Guid id, bool trackChange = false);
         Task CreateCartAsync(CartRequestDTO cart);
-        Task UpdateCartAsync(Cart cart);
+        Task UpdateCartAsync(Guid id, CartRequestDTO cart);
         Task DeleteCartAsync(Guid id, bool trackChange = false);
         Task HardDeleteCartAsync(Guid id, bool trackChange = false);
     }

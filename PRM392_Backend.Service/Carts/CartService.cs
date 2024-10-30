@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using PRM392_Backend.Domain.Exceptions;
 using PRM392_Backend.Domain.Models;
 using PRM392_Backend.Domain.Repository;
 using PRM392_Backend.Service.Carts.DTO;
@@ -76,7 +77,7 @@ namespace PRM392_Backend.Service.Carts
             
             repositoryManager.CartRepository.CreateCart(cartFinal);
             await repositoryManager.Save(); 
-                    var total = 0.0;
+            var total = 0.0;
             if (cart == null)
             {
                 throw new ArgumentNullException(nameof(cart), "Cart cannot be null.");
@@ -97,7 +98,6 @@ namespace PRM392_Backend.Service.Carts
                 await repositoryManager.Save();
             }
             cartFinal.TotalPrice = total;
-            
             repositoryManager.CartRepository.UpdateCart(cartFinal);
             await repositoryManager.Save();
         }
@@ -106,9 +106,25 @@ namespace PRM392_Backend.Service.Carts
         /// Cập nhật thông tin giỏ hàng.
         /// </summary>
         /// <param name="cart">Đối tượng giỏ hàng cần cập nhật.</param>
-        public async Task UpdateCartAsync(Cart cart)
+        public async Task UpdateCartAsync(Guid id,CartRequestDTO cart)
         {
-            repositoryManager.CartRepository.UpdateCart(cart);
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var cartExist = await repositoryManager.CartRepository.GetCartById(id,true);
+            if (cartExist == null)
+            {
+                throw new CartNotFoundException(id);
+            }
+            foreach (var item in cart.Items)
+            {
+                var product = await repositoryManager.ProductRepository.GetProductById(item.ProductID, true);
+                CartItem cartItem = mapper.Map<CartItem>(item);
+                cartItem.CartID = cartExist.ID;
+                cartItem.Price = product.Price * cartItem.Quantity;
+                cartExist.TotalPrice += cartItem.Price;
+                repositoryManager.CartItemRepository.CreateCartItem(cartItem);
+                await repositoryManager.Save();
+            }
+            repositoryManager.CartRepository.UpdateCart(cartExist);
             await repositoryManager.Save();
         }
 

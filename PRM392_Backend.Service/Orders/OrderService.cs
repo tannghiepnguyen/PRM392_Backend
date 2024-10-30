@@ -67,7 +67,6 @@ namespace PRM392_Backend.Service.Orders
             var storeLocationExist = await repositoryManager.StoreLocationRepository.GetStoreLocationById(orderDTO.StoreLocationID,true);
             repositoryManager.OrderRepository.CreateOrder(order);
             await repositoryManager.Save();
-
             return order;
         }
 
@@ -85,7 +84,6 @@ namespace PRM392_Backend.Service.Orders
         {
             var order = await repositoryManager.OrderRepository.GetOrderById(id, trackChange);
             if (order == null) throw new OrderNotFoundException(id);
-
             repositoryManager.OrderRepository.DeleteOrder(order);
             await repositoryManager.Save();
         }

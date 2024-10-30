@@ -15,7 +15,8 @@ namespace PRM392_Backend.Service.Orders.DTO
         public Guid StoreLocationID { get; set; }
      
         public PaymentMethod PaymentMethod { get; set; }
-        
+        public string BillingAddress { get; set; }
+
     }
   
 }
