@@ -82,5 +82,18 @@ namespace PRM392_Backend.Infrastructure.Repository
                 Delete(cart); // Sử dụng phương thức Delete từ RepositoryBase để xóa thật sự
             }
         }
+        /// <summary>
+        /// Lấy giỏ hàng đang hoạt động theo UserID.
+        /// </summary>
+        /// <param name="accountID">ID của tài khoản cần kiểm tra giỏ hàng.</param>
+        /// <param name="trackChange">Có theo dõi thay đổi hay không.</param>
+        /// <returns>Giỏ hàng đang hoạt động nếu có, ngược lại trả về null.</returns>
+        public async Task<Cart?> GetSingleActiveCartByUserId(string accountID, bool trackChange)
+        {
+            return await FindByCondition(cart => cart.IsActive && cart.UserID == accountID, trackChange)
+                .Include(cart => cart.CartItems) // Tải CartItems
+                .ThenInclude(cartItem => cartItem.Product) // Tải Product của từng CartItem
+                .FirstOrDefaultAsync();
+        }
     }
 }

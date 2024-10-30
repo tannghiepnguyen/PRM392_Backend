@@ -16,5 +16,6 @@ namespace PRM392_Backend.Domain.Repository
         void UpdateCart(Cart cart);
         void DeleteCart(Guid id, bool trackChange);
         void HardDeleteCart(Guid id, bool trackChange);
+        Task<Cart?> GetSingleActiveCartByUserId(string accountID, bool trackChange);
     }
 }

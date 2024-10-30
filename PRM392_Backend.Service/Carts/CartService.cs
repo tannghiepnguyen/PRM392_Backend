@@ -67,66 +67,96 @@ namespace PRM392_Backend.Service.Carts
         public async Task CreateCartAsync(CartRequestDTO cart)
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            Cart cartFinal = new Cart
+
+            // Check for an existing active cart
+            var existingCart = await repositoryManager.CartRepository.GetSingleActiveCartByUserId(userId, true);
+            if (existingCart != null)
+            {
+                await UpdateCartAsync(existingCart.ID, cart);
+                return;
+            }
+
+            // Create a new cart if none exists
+            var newCart = new Cart
             {
                 UserID = userId,
                 Status = CartStatus.Unpaid.ToString(),
                 IsActive = true,
-                TotalPrice =0.0,
+                TotalPrice = 0.0,
             };
-            
-            repositoryManager.CartRepository.CreateCart(cartFinal);
-            await repositoryManager.Save(); 
-            var total = 0.0;
-            if (cart == null)
-            {
-                throw new ArgumentNullException(nameof(cart), "Cart cannot be null.");
-            }
 
-            if (cart.Items == null || !cart.Items.Any())
+            repositoryManager.CartRepository.CreateCart(newCart);
+            await repositoryManager.Save();
+
+            if (cart?.Items == null || !cart.Items.Any())
             {
                 throw new ArgumentException("Cart must contain at least one item.", nameof(cart.Items));
             }
-            foreach (var item in cart.Items)
-            {
-                var product = await repositoryManager.ProductRepository.GetProductById(item.ProductID,true);
-                CartItem cartItem = mapper.Map<CartItem>(item);
-                cartItem.CartID = cartFinal.ID;
-                cartItem.Price = product.Price * cartItem.Quantity;
-                total += cartItem.Price;
-                repositoryManager.CartItemRepository.CreateCartItem(cartItem);
-                await repositoryManager.Save();
-            }
-            cartFinal.TotalPrice = total;
-            repositoryManager.CartRepository.UpdateCart(cartFinal);
+
+            double total = await AddCartItemsToCartAsync(cart.Items, newCart.ID);
+            newCart.TotalPrice = total;
+
+            repositoryManager.CartRepository.UpdateCart(newCart);
             await repositoryManager.Save();
         }
 
-        /// <summary>
-        /// Cập nhật thông tin giỏ hàng.
-        /// </summary>
-        /// <param name="cart">Đối tượng giỏ hàng cần cập nhật.</param>
-        public async Task UpdateCartAsync(Guid id,CartRequestDTO cart)
+        public async Task UpdateCartAsync(Guid id, CartRequestDTO cart)
         {
-            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var cartExist = await repositoryManager.CartRepository.GetCartById(id,true);
-            if (cartExist == null)
+            var cartExist = await repositoryManager.CartRepository.GetCartById(id, true)
+                            ?? throw new CartNotFoundException(id);
+
+            if (cart?.Items == null || !cart.Items.Any())
             {
-                throw new CartNotFoundException(id);
+                throw new ArgumentException("Cart must contain at least one item.", nameof(cart.Items));
             }
+
             foreach (var item in cart.Items)
             {
-                var product = await repositoryManager.ProductRepository.GetProductById(item.ProductID, true);
-                CartItem cartItem = mapper.Map<CartItem>(item);
-                cartItem.CartID = cartExist.ID;
-                cartItem.Price = product.Price * cartItem.Quantity;
-                cartExist.TotalPrice += cartItem.Price;
-                repositoryManager.CartItemRepository.CreateCartItem(cartItem);
-                await repositoryManager.Save();
+                var product = await repositoryManager.ProductRepository.GetProductById(item.ProductID, true)
+                              ?? throw new ProductNotFoundException(item.ProductID);
+
+                var existingCartItem = cartExist.CartItems.FirstOrDefault(ci => ci.ProductID == item.ProductID);
+                if (existingCartItem != null)
+                {
+                    existingCartItem.Quantity += item.Quantity;
+                    existingCartItem.Price = product.Price * existingCartItem.Quantity;
+                }
+                else
+                {
+                    var newCartItem = mapper.Map<CartItem>(item);
+                    newCartItem.CartID = cartExist.ID;
+                    newCartItem.Price = product.Price * newCartItem.Quantity;
+                    cartExist.CartItems.Add(newCartItem);
+                }
             }
+
+            cartExist.TotalPrice = cartExist.CartItems.Sum(ci => ci.Price);
+
             repositoryManager.CartRepository.UpdateCart(cartExist);
             await repositoryManager.Save();
         }
+
+        private async Task<double> AddCartItemsToCartAsync(IEnumerable<CartItemRequestDTO> items, Guid cartId)
+        {
+            double total = 0.0;
+
+            foreach (var item in items)
+            {
+                var product = await repositoryManager.ProductRepository.GetProductById(item.ProductID, true)
+                              ?? throw new ProductNotFoundException(item.ProductID);
+
+                var cartItem = mapper.Map<CartItem>(item);
+                cartItem.CartID = cartId;
+                cartItem.Price = product.Price * cartItem.Quantity;
+                total += cartItem.Price;
+
+                repositoryManager.CartItemRepository.CreateCartItem(cartItem);
+            }
+
+            await repositoryManager.Save();
+            return total;
+        }
+
 
         /// <summary>
         /// Xóa (soft delete) giỏ hàng theo ID.
