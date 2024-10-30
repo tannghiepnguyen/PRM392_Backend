@@ -1,6 +1,4 @@
-﻿using PRM392_Backend.Domain.Repository;
-
-namespace PRM392_Backend.Domain.Repository
+﻿namespace PRM392_Backend.Domain.Repository
 {
 	public interface IRepositoryManager
 	{
@@ -11,8 +9,6 @@ namespace PRM392_Backend.Domain.Repository
 		ICartItemRepository CartItemRepository { get; }
 		IOrderRepository OrderRepository { get; }
 		IChatMessageRepository ChatMessageRepository { get; }
-        IPaymentRepository PaymentRepository { get; }
-        INotificationRepository NotificationRepository { get; }
-        Task Save();
+		Task Save();
 	}
 }
