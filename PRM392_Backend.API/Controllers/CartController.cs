@@ -88,7 +88,7 @@ namespace PRM392_Backend.API.Controllers
         /// <param name="cart">Đối tượng giỏ hàng cần tạo.</param>
         /// <returns>Giỏ hàng đã được tạo.</returns>
         [HttpPost]
-     
+        [Authorize]
         public async Task<IActionResult> CreateCart([FromBody] CartRequestDTO cart)
         {
             if (cart == null)
@@ -116,32 +116,24 @@ namespace PRM392_Backend.API.Controllers
         /// <param name="updatedCart">Đối tượng giỏ hàng đã được cập nhật.</param>
         /// <returns>NoContent nếu cập nhật thành công hoặc NotFound nếu không tìm thấy.</returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCart(Guid id, [FromBody] Cart updatedCart)
+        [Authorize]
+        public async Task<IActionResult> UpdateCart(Guid id, [FromBody] CartRequestDTO updatedCart)
         {
-            if (updatedCart == null || id != updatedCart.ID)
-                return BadRequest("Dữ liệu giỏ hàng không hợp lệ.");
+            if (updatedCart == null)
+                return BadRequest("Giỏ hàng không được để trống.");
+
+            // Kiểm tra các thuộc tính bắt buộc
+
 
             try
             {
-                var existingCart = await serviceManager.CartService.GetCartByIdAsync(id);
-                if (existingCart == null)
-                    return NotFound($"Không tìm thấy giỏ hàng với ID: {id}");
-
-                // Cập nhật các thuộc tính cần thiết
-                existingCart.TotalPrice = updatedCart.TotalPrice;
-                existingCart.Status = updatedCart.Status;
-                existingCart.CartItems = updatedCart.CartItems;
-                existingCart.UserID = updatedCart.UserID;
-                existingCart.Order = updatedCart.Order;
-                existingCart.IsActive = updatedCart.IsActive;
-
-                await serviceManager.CartService.UpdateCartAsync(existingCart);
-                return NoContent();
+                await serviceManager.CartService.UpdateCartAsync(id,updatedCart);
+                return Ok();
             }
             catch (Exception ex)
             {
                 // Log lỗi ở đây nếu cần
-                return StatusCode(500, $"Đã xảy ra lỗi khi cập nhật giỏ hàng: {ex.Message}");
+                return StatusCode(500, $"Đã xảy ra lỗi khi tạo giỏ hàng: {ex.Message}");
             }
         }
 
@@ -151,6 +143,7 @@ namespace PRM392_Backend.API.Controllers
         /// <param name="id">ID của giỏ hàng cần xóa.</param>
         /// <returns>NoContent nếu xóa thành công hoặc NotFound nếu không tìm thấy.</returns>
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteCart(Guid id)
         {
             try
@@ -175,6 +168,7 @@ namespace PRM392_Backend.API.Controllers
         /// <param name="id">ID của giỏ hàng cần xóa.</param>
         /// <returns>NoContent nếu xóa thành công hoặc NotFound nếu không tìm thấy.</returns>
         [HttpDelete("hard/{id}")]
+        [Authorize]
         public async Task<IActionResult> HardDeleteCart(Guid id)
         {
             try
