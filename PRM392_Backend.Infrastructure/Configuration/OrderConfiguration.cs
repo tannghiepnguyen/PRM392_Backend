@@ -10,6 +10,7 @@ namespace PRM392_Backend.Infrastructure.Configuration
 		{
 			builder.HasKey(o => o.ID);
 			builder.Property(o => o.OrderDate).IsRequired();
+			builder.Property(o => o.BillingAddress).IsRequired();
 			builder.Property(o => o.PaymentMethod).IsRequired();
 			builder.Property(o => o.OrderStatus).IsRequired();
 			builder.HasOne(o => o.Cart).WithOne(c => c.Order).HasForeignKey<Order>(o => o.CartID).OnDelete(DeleteBehavior.Restrict);
