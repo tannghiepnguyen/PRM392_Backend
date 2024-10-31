@@ -14,6 +14,13 @@ namespace PRM392_Backend.Service.Orders.DTO
         public OrderProfilecs()
         {
             CreateMap<OrderRequestForCreate, Order>().ReverseMap();
+            CreateMap<Order, OrderResponse>()
+                .ForMember(dest => dest.Cart, opt => opt.MapFrom(src => src.Cart))
+                .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User))
+                .ForMember(dest => dest.StoreLocation, opt => opt.MapFrom(src => src.StoreLocation))
+                .ReverseMap();
+            CreateMap<User, UserResponse>().ReverseMap();
+            CreateMap<StoreLocation, StoreLocationResponse>().ReverseMap();
         }
     }
 }

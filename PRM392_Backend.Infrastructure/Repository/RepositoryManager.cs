@@ -13,7 +13,8 @@ namespace PRM392_Backend.Infrastructure.Repository
 		private readonly Lazy<ICartItemRepository> itemRepository;
 		private readonly Lazy<IOrderRepository> orderRepository;
 		private readonly Lazy<IChatMessageRepository> chatMessageRepository;
-		public RepositoryManager(DatabaseContext databaseContext)
+        private readonly Lazy<IPaymentRepository> paymentRepository;
+        public RepositoryManager(DatabaseContext databaseContext)
 		{
 			context = databaseContext;
 			categoryRepository = new Lazy<ICategoryRepository>(() => new CategoryRepository(context));
@@ -23,16 +24,16 @@ namespace PRM392_Backend.Infrastructure.Repository
             itemRepository = new Lazy<ICartItemRepository>(() => new CartItemRepository(context));
 			orderRepository = new Lazy<IOrderRepository>(() => new OrderRepository(context));
 			chatMessageRepository = new Lazy<IChatMessageRepository> (() => new ChatMessageRepository(context));
-		}
+            paymentRepository = new Lazy<IPaymentRepository>(() => new PaymentRepository(context));
+        }
 		public ICategoryRepository CategoryRepository => categoryRepository.Value;
-
 		public IStoreLocationRepository StoreLocationRepository => storeLocationRepository.Value;
-
 		public IProductRepository ProductRepository => productRepository.Value;
 		public ICartRepository CartRepository => cartRepository.Value;
 		public ICartItemRepository CartItemRepository => itemRepository.Value;
 		public IOrderRepository OrderRepository => orderRepository.Value;
 		public IChatMessageRepository ChatMessageRepository => chatMessageRepository.Value;
-		public async Task Save() => await context.SaveChangesAsync();
+        public IPaymentRepository PaymentRepository => paymentRepository.Value;
+        public async Task Save() => await context.SaveChangesAsync();
 	}
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using PRM392_Backend.Domain.Exceptions;
 using PRM392_Backend.Domain.Models;
 using PRM392_Backend.Domain.Repository;
+using PRM392_Backend.Service.Carts.DTO;
 using PRM392_Backend.Service.Orders.DTO;
 using System;
 using System.Collections.Generic;
@@ -26,17 +27,17 @@ namespace PRM392_Backend.Service.Orders
             this._httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IEnumerable<Order>> GetOrdersByStatus (OrderStatus orderStatus,bool trackChange)
+        public async Task<OrderResponse> GetPendingOrder (bool trackChange)
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var orders = await repositoryManager.OrderRepository.GetOrdersByStatusAndUserID(userId,orderStatus.ToString(),false);
-            return orders;
+            var order =  await repositoryManager.OrderRepository.GetPendingOrdersByAccountID(userId,false);
+            return mapper.Map<OrderResponse>(order);
         }
-        public async Task<IEnumerable<Order>> GetAllOrders(bool trackChange)
+        public async Task<IEnumerable<OrderResponse>> GetAllOrders(bool trackChange)
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var orders = await repositoryManager.OrderRepository.GetOrdersByAccountID(userId, false);
-            return orders;
+            return mapper.Map<IEnumerable<OrderResponse>>(orders);
         }
 
 
@@ -53,7 +54,7 @@ namespace PRM392_Backend.Service.Orders
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             Order order= mapper.Map<Order>(orderDTO);
             order.UserID = userId;
-            order.OrderStatus = OrderStatus.Processing.ToString() ;
+            order.OrderStatus = OrderStatus.Pending.ToString() ;
             order.PaymentMethod = orderDTO.PaymentMethod.ToString() ;
             var cartExist = await repositoryManager.CartRepository.GetCartById(order.CartID,true);
             if(cartExist.IsActive == false)

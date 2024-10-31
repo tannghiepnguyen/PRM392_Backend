@@ -12,6 +12,15 @@ namespace PRM392_Backend.Service.Carts.DTO
     {
         public CartProfilecs() {
             CreateMap<CartItemRequestDTO?,CartItem>().ReverseMap();
+
+            CreateMap<Cart, CartDTO>()
+            .ForMember(dest => dest.CartItems, opt => opt.MapFrom(src => src.CartItems));
+            CreateMap<CartItem, CartItemDTO>()
+                .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
+                .ReverseMap();
+            CreateMap<CartItem, GetCartItemResponse>()
+                .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
+                .ReverseMap();
         }
     }
 }

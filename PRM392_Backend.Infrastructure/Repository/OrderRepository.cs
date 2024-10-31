@@ -26,7 +26,13 @@ namespace PRM392_Backend.Infrastructure.Repository
         /// <param name="trackChange">Có theo dõi thay đổi hay không.</param>
         /// <returns>Danh sách các đơn hàng của tài khoản chỉ định.</returns>
         public async Task<IEnumerable<Order>> GetOrdersByAccountID(string accountID, bool trackChange) =>
-            await FindByCondition(order => order.UserID == accountID.ToString(), trackChange).ToListAsync();
+            await FindByCondition(order => order.UserID == accountID.ToString(), trackChange)
+             .Include(order => order.Cart)
+                .ThenInclude(cart => cart.CartItems)
+                .ThenInclude(cartitems => cartitems.Product)
+            .Include(order => order.User)
+            .Include(order => order.StoreLocation)
+            .ToListAsync();
 
         /// <summary>
         /// Lấy các đơn hàng theo trạng thái và OrderID.
@@ -35,9 +41,28 @@ namespace PRM392_Backend.Infrastructure.Repository
         /// <param name="orderID">ID của đơn hàng cần lọc.</param>
         /// <param name="trackChange">Có theo dõi thay đổi hay không.</param>
         /// <returns>Danh sách các đơn hàng với trạng thái và OrderID chỉ định.</returns>
-        public async Task<IEnumerable<Order>> GetOrdersByStatusAndUserID(string status, string UserId, bool trackChange) =>
-            await FindByCondition(order => order.OrderStatus == status && order.UserID == UserId, trackChange)
-                .ToListAsync();
+        //public async Task<Order?> GetOrdersByStatusAndUserID(string status, string UserId, bool trackChange) =>
+        //    await FindByCondition(order => order.OrderStatus == status && order.UserID == UserId, trackChange)
+        //        .FirstOrDefaultAsync();
+
+
+        public async Task<Order?> GetPendingOrdersByAccountID(string accountID, bool trackChange) =>
+         FindByCondition(order => order.UserID == accountID.ToString() && order.OrderStatus == OrderStatus.Pending.ToString(), trackChange)
+         .Include(order => order.Cart)
+            .ThenInclude(cart => cart.CartItems)
+            .ThenInclude(cartitems => cartitems.Product)
+        .Include(order => order.User)
+        .Include(order => order.StoreLocation)
+        .FirstOrDefault();
+
+        public Order? GetPendingOrderAndUserId(string userId, bool trackChange) =>
+             FindByCondition(order => order.UserID == userId.ToString() &&  order.OrderStatus == OrderStatus.Pending.ToString(), trackChange)
+            .Include(order => order.Cart)
+                .ThenInclude(cart => cart.CartItems)
+                .ThenInclude(cartitems => cartitems.Product)
+            .Include(order => order.User)
+            .FirstOrDefault();
+
 
         public async Task<Order?> GetOrderById(Guid id, bool trackChange) =>
             await FindByCondition(x => x.ID == id, trackChange).SingleOrDefaultAsync();
@@ -57,5 +82,7 @@ namespace PRM392_Backend.Infrastructure.Repository
         public void UpdateOrder(Order order) => Update(order);
 
         public void DeleteOrder(Order order) => Delete(order);
+
+        
     }
 }

@@ -45,6 +45,14 @@ namespace PRM392_Backend.Infrastructure.Repository
                 .ThenInclude(cartItem => cartItem.Product) // Tải Product của từng CartItem
                 .ToListAsync();
 
+        public Cart? GetCartActiveAndUserId(string accountID, bool trackChange) =>
+                FindByCondition(cart => cart.IsActive && cart.UserID == accountID.ToString(), trackChange)
+                .Include(cart => cart.CartItems) 
+                .ThenInclude(cartItem => cartItem.Product) 
+                .FirstOrDefault(); 
+       
+
+
         /// <summary>
         /// Lấy giỏ hàng theo ID.
         /// </summary>

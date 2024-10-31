@@ -109,34 +109,7 @@ namespace PRM392_Backend.API.Controllers
             }
         }
 
-        /// <summary>
-        /// Cập nhật thông tin giỏ hàng.
-        /// </summary>
-        /// <param name="id">ID của giỏ hàng cần cập nhật.</param>
-        /// <param name="updatedCart">Đối tượng giỏ hàng đã được cập nhật.</param>
-        /// <returns>NoContent nếu cập nhật thành công hoặc NotFound nếu không tìm thấy.</returns>
-        [HttpPut("{id}")]
-        [Authorize]
-        public async Task<IActionResult> UpdateCart(Guid id, [FromBody] CartRequestDTO updatedCart)
-        {
-            if (updatedCart == null)
-                return BadRequest("Giỏ hàng không được để trống.");
-
-            // Kiểm tra các thuộc tính bắt buộc
-
-
-            try
-            {
-                await serviceManager.CartService.UpdateCartAsync(id,updatedCart);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                // Log lỗi ở đây nếu cần
-                return StatusCode(500, $"Đã xảy ra lỗi khi tạo giỏ hàng: {ex.Message}");
-            }
-        }
-
+     
         /// <summary>
         /// Xóa (soft delete) giỏ hàng theo ID.
         /// </summary>

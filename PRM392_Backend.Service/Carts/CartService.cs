@@ -32,10 +32,11 @@ namespace PRM392_Backend.Service.Carts
         /// </summary>
         /// <param name="trackChange">Có theo dõi thay đổi hay không.</param>
         /// <returns>Danh sách các giỏ hàng.</returns>
-        public async Task<IEnumerable<Cart>> GetAllCartsAsync(bool trackChange = false)
+        public async Task<IEnumerable<CartDTO>> GetAllCartsAsync(bool trackChange = false)
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            return await repositoryManager.CartRepository.GetCarts(userId,trackChange);
+            var carts = await repositoryManager.CartRepository.GetCarts(userId, trackChange);
+            return mapper.Map<IEnumerable<CartDTO>>(carts);
         }
 
         /// <summary>
@@ -43,10 +44,11 @@ namespace PRM392_Backend.Service.Carts
         /// </summary>
         /// <param name="trackChange">Có theo dõi thay đổi hay không.</param>
         /// <returns>Danh sách các giỏ hàng hoạt động.</returns>
-        public async Task<IEnumerable<Cart>> GetActiveCartsAsync(bool trackChange = false)
+        public async Task<IEnumerable<CartDTO>> GetActiveCartsAsync(bool trackChange = false)
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            return await repositoryManager.CartRepository.GetActiveCarts(userId,trackChange);
+            var carts = await repositoryManager.CartRepository.GetActiveCarts(userId, trackChange);
+            return mapper.Map<IEnumerable<CartDTO>>(carts);
         }
 
         /// <summary>
@@ -55,9 +57,10 @@ namespace PRM392_Backend.Service.Carts
         /// <param name="id">ID của giỏ hàng.</param>
         /// <param name="trackChange">Có theo dõi thay đổi hay không.</param>
         /// <returns>Đối tượng giỏ hàng hoặc null nếu không tìm thấy.</returns>
-        public async Task<Cart?> GetCartByIdAsync(Guid id, bool trackChange = false)
+        public async Task<CartDTO?> GetCartByIdAsync(Guid id, bool trackChange = false)
         {
-            return await repositoryManager.CartRepository.GetCartById(id, trackChange);
+            var cart = await repositoryManager.CartRepository.GetCartById(id, trackChange);
+            return mapper.Map<CartDTO>(cart);
         }
 
         /// <summary>
