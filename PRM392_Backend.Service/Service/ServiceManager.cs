@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using PRM392_Backend.Domain.Models;
 using PRM392_Backend.Domain.Repository;
 using PRM392_Backend.Service.CartItems;
 using PRM392_Backend.Service.Carts;
 using PRM392_Backend.Service.Categories;
+using PRM392_Backend.Service.ChatHubs;
 using PRM392_Backend.Service.ChatMessages;
 using PRM392_Backend.Service.IService;
 using PRM392_Backend.Service.Orders;
@@ -26,7 +28,7 @@ namespace PRM392_Backend.Service.Service
 		private readonly Lazy<ICartItemService> cartItemService;
 		private readonly Lazy<IOrderService> orderService;
 		private readonly Lazy<IChatMessageService> chatMessageService;
-		public ServiceManager(IRepositoryManager repositoryManager, UserManager<User> userManager, IConfiguration configuration, IMapper mapper, IBlobService blobService, IHttpContextAccessor _httpContextAccessor)
+		public ServiceManager(IRepositoryManager repositoryManager, UserManager<User> userManager, IConfiguration configuration, IMapper mapper, IBlobService blobService, IHttpContextAccessor _httpContextAccessor, IHubContext<ChatHub> _hubContext)
 		{
 			authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(userManager, mapper, configuration));
 			categoryService = new Lazy<ICategoryService>(() => new CategoryService(repositoryManager, mapper));
@@ -35,7 +37,7 @@ namespace PRM392_Backend.Service.Service
 			cartService = new Lazy<ICartService>(()=> new CartService(repositoryManager,mapper,_httpContextAccessor));
 			cartItemService = new Lazy<ICartItemService>(() => new CartItemService(repositoryManager, mapper,_httpContextAccessor));
 			orderService = new Lazy<IOrderService>(() => new OrderService(repositoryManager, mapper, _httpContextAccessor));	
-			chatMessageService = new Lazy<IChatMessageService>(()=> new ChatMessageService(repositoryManager, mapper,_httpContextAccessor));	
+			chatMessageService = new Lazy<IChatMessageService>(()=> new ChatMessageService(repositoryManager, mapper,_httpContextAccessor,_hubContext));	
 		}
 		public IAuthenticationService AuthenticationService => authenticationService.Value;
 

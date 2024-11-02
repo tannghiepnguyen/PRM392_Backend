@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SignalR;
 using PRM392_Backend.Domain.Models;
 using PRM392_Backend.Domain.Repository;
+using PRM392_Backend.Service.ChatHubs;
 using PRM392_Backend.Service.ChatMessages.DTO;
 using System;
 using System.Collections.Generic;
@@ -17,12 +19,14 @@ namespace PRM392_Backend.Service.ChatMessages
         private readonly IRepositoryManager _repositoryManager;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IHubContext<ChatHub> _hubContext;
 
-        public ChatMessageService(IRepositoryManager repositoryManager, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public ChatMessageService(IRepositoryManager repositoryManager, IMapper mapper, IHttpContextAccessor httpContextAccessor, IHubContext<ChatHub> hubContext)
         {
             _repositoryManager = repositoryManager;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
+            _hubContext = hubContext;   
         }
 
         public async Task<IEnumerable<ChatMessage>> GetAllChatMessagesAsync(bool trackChange = false)
@@ -49,6 +53,8 @@ namespace PRM392_Backend.Service.ChatMessages
 
             _repositoryManager.ChatMessageRepository.CreateChatMessage(chatMessage);
             await _repositoryManager.Save();
+
+            await _hubContext.Clients.All.SendAsync("ReceiveMessage", userId, chatMessage.Message, chatMessage.SentdAt);
         }
 
         public async Task UpdateChatMessageAsync(ChatMessage chatMessage)
