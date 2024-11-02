@@ -5,6 +5,7 @@ using PRM392_Backend.Domain.Exceptions;
 using PRM392_Backend.Domain.Models;
 using PRM392_Backend.Domain.Repository;
 using PRM392_Backend.Service.CartItems.DTO;
+using PRM392_Backend.Service.Carts.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,23 +30,23 @@ namespace PRM392_Backend.Service.CartItems
 
 
 
-        public async Task<IEnumerable<CartItem>> GetAllCartItems(bool trackChange)
+        public async Task<IEnumerable<GetCartItemResponse>> GetAllCartItems(bool trackChange)
         {
             var cartItems = await repositoryManager.CartItemRepository.GetCartItems(trackChange);
-            return cartItems;
+            return mapper.Map<IEnumerable<GetCartItemResponse>>(cartItems);           
         }
 
-        public async Task<IEnumerable<CartItem>> GetCartItemsByCartId(Guid cartId, bool trackChange)
+        public async Task<IEnumerable<GetCartItemResponse>> GetCartItemsByCartId(Guid cartId, bool trackChange)
         {
             var cartItems = await repositoryManager.CartItemRepository.GetCartItemsByCartId(cartId, trackChange);
-            return cartItems;
+            return mapper.Map<IEnumerable<GetCartItemResponse>>(cartItems);
         }
 
-        public async Task<CartItem?> GetCartItem(Guid id, bool trackChange)
+        public async Task<GetCartItemResponse> GetCartItem(Guid id, bool trackChange)
         {
             var cartItem = await repositoryManager.CartItemRepository.GetCartItemById(id, trackChange);
-            if (cartItem == null) throw new CartItemNotFoundException(id);
-            return cartItem;
+            if (cartItem == null) throw new CartItemNotFoundException(id);       
+            return mapper.Map<GetCartItemResponse>(cartItem);
         }
         public async Task DeleteCartItem(Guid id, bool trackChange)
         {

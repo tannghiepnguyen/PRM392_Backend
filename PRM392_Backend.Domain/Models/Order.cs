@@ -8,7 +8,8 @@ namespace PRM392_Backend.Domain.Models
 		public Payment Payment { get; set; }
 		public string BillingAddress { get; set; }
 		public Guid? CartID { get; set; }
-		public Cart Cart { get; set; }
+        [JsonIgnore]
+        public Cart Cart { get; set; }
 		public string? UserID { get; set; }
 		public User User { get; set; }
 		public Guid? StoreLocationID { get; set; }
@@ -34,6 +35,7 @@ namespace PRM392_Backend.Domain.Models
 	[JsonConverter(typeof(JsonStringEnumConverter))]
 	public enum OrderStatus
 	{
+		Pending,
 		Processing,
 		Shipped,
 		Delivered,

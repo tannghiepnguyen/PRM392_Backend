@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Converters;
 using PRM392_Backend.API;
 using PRM392_Backend.API.Extensions;
 using PRM392_Backend.Service.Extension;
+using PRM392_Backend.Service.PayOSLib;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,11 +14,34 @@ var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
         options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+    })
+    .AddNewtonsoftJson(options =>
+    {       
+        options.SerializerSettings.Converters.Add(new StringEnumConverter());
     });
 
 builder.Services.AddSignalR();
+// Retrieve the connection string
+var connection = builder.Environment.IsDevelopment()
+    ? builder.Configuration.GetConnectionString("azure_sql_connectionstring") + ";Connection Timeout=30;MultipleActiveResultSets=true;"
+    : Environment.GetEnvironmentVariable("azure_sql_connectionstring") + ";Connection Timeout=30;MultipleActiveResultSets=true;";
+
+// Ensure the connection string is not null or empty
+if (string.IsNullOrEmpty(connection))
+{
+    throw new InvalidOperationException("No connection string found.");
+}
+
+builder.Services.AddSingleton(x =>
+    new PayOSService(
+        builder.Configuration["payOS:clientId"],
+        builder.Configuration["payOS:apiKey"],
+        builder.Configuration["payOS:checksumKey"]
+    )
+);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

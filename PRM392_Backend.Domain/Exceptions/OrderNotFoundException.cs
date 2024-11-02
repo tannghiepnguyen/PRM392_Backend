@@ -11,5 +11,7 @@ namespace PRM392_Backend.Domain.Exceptions
         public OrderNotFoundException(Guid orderId) : base($"The order with id: {orderId} doesn't exist in the database")
         {
         }
+
+        public OrderNotFoundException(string message) : base(message) { }
     }
 }

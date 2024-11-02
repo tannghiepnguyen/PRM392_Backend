@@ -22,11 +22,11 @@ namespace PRM392_Backend.API.Controllers
 
 
         // GET: api/Orders
-        [HttpGet("Processing")]
+        [HttpGet("pending")]
         [Authorize]
-        public async Task<IActionResult> GetOrder([FromQuery] bool trackChange)
+        public async Task<IActionResult> GetPendingOrder([FromQuery] bool trackChange)
         {
-            var orders = await serviceManager.OrderService.GetOrdersByStatus(OrderStatus.Processing,trackChange);
+            var orders = await serviceManager.OrderService.GetPendingOrder(trackChange);
             return Ok(orders);
         }
         [HttpGet]

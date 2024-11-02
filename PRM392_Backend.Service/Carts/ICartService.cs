@@ -10,9 +10,9 @@ namespace PRM392_Backend.Service.Carts
 {
     public interface ICartService
     {
-        Task<IEnumerable<Cart>> GetAllCartsAsync(bool trackChange = false);
-        Task<IEnumerable<Cart>> GetActiveCartsAsync(bool trackChange = false);
-        Task<Cart?> GetCartByIdAsync(Guid id, bool trackChange = false);
+        Task<IEnumerable<CartDTO>> GetAllCartsAsync(bool trackChange = false);
+        Task<IEnumerable<CartDTO>> GetActiveCartsAsync(bool trackChange = false);
+        Task<CartDTO?> GetCartByIdAsync(Guid id, bool trackChange = false);
         Task CreateCartAsync(CartRequestDTO cart);
         Task UpdateCartAsync(Guid id, CartRequestDTO cart);
         Task DeleteCartAsync(Guid id, bool trackChange = false);

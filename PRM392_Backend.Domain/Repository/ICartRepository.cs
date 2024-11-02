@@ -12,6 +12,7 @@ namespace PRM392_Backend.Domain.Repository
         void CreateCart(Cart cart);
         Task<IEnumerable<Cart>> GetCarts(string accountID, bool trackChange);
         Task<IEnumerable<Cart>> GetActiveCarts(string accountID, bool trackChange);
+        Cart GetCartActiveAndUserId(string accountID, bool trackChange);
         Task<Cart?> GetCartById(Guid? id, bool trackChange);
         void UpdateCart(Cart cart);
         void DeleteCart(Guid id, bool trackChange);
