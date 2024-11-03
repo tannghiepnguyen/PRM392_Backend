@@ -23,6 +23,7 @@ builder.Services.AddControllers()
         options.SerializerSettings.Converters.Add(new StringEnumConverter());
     });
 
+builder.Services.AddSignalR();
 // Retrieve the connection string
 var connection = builder.Environment.IsDevelopment()
     ? builder.Configuration.GetConnectionString("azure_sql_connectionstring") + ";Connection Timeout=30;MultipleActiveResultSets=true;"
