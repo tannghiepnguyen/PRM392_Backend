@@ -11,6 +11,7 @@ using PRM392_Backend.Service.Categories;
 using PRM392_Backend.Service.ChatHubs;
 using PRM392_Backend.Service.ChatMessages;
 using PRM392_Backend.Service.IService;
+using PRM392_Backend.Service.Notifications;
 using PRM392_Backend.Service.Orders;
 using PRM392_Backend.Service.Payments;
 using PRM392_Backend.Service.PayOSLib;
@@ -31,9 +32,10 @@ namespace PRM392_Backend.Service.Service
 		private readonly Lazy<IOrderService> orderService;
 		private readonly Lazy<IChatMessageService> chatMessageService;
         private readonly Lazy<IPaymentService> paymentService;
+        private readonly Lazy<INotificationService> notificationService;
         public ServiceManager(PayOSService payOSService, IRepositoryManager repositoryManager, UserManager<User> userManager, IConfiguration configuration, IMapper mapper, IBlobService blobService, IHttpContextAccessor _httpContextAccessor, IHubContext<ChatHub> _hubContext)
 		{
-			authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(userManager, mapper, configuration));
+			authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(userManager, mapper, configuration, repositoryManager));
 			categoryService = new Lazy<ICategoryService>(() => new CategoryService(repositoryManager, mapper));
 			storeLocationService = new Lazy<IStoreLocationService>(() => new StoreLocationService(repositoryManager, mapper));
 			productService = new Lazy<IProductService>(() => new ProductService(repositoryManager, mapper, blobService));
@@ -42,6 +44,7 @@ namespace PRM392_Backend.Service.Service
 			orderService = new Lazy<IOrderService>(() => new OrderService(repositoryManager, mapper, _httpContextAccessor));	
 			chatMessageService = new Lazy<IChatMessageService>(()=> new ChatMessageService(repositoryManager, mapper,_httpContextAccessor,_hubContext));
             paymentService = new Lazy<IPaymentService>(() => new PaymentService(repositoryManager, mapper, _httpContextAccessor, payOSService));
+			notificationService = new Lazy<INotificationService>(() => new NotificationService(repositoryManager, userManager, mapper, _httpContextAccessor));
         }
 		public IAuthenticationService AuthenticationService => authenticationService.Value;
 		public ICategoryService CategoryService => categoryService.Value;
@@ -52,5 +55,6 @@ namespace PRM392_Backend.Service.Service
 		public IOrderService OrderService => orderService.Value;
 		public IChatMessageService ChatMessageService => chatMessageService.Value;
         public IPaymentService PaymentService => paymentService.Value;
+		public INotificationService NotificationService => notificationService.Value;
     }
 }

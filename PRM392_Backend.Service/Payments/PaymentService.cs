@@ -147,6 +147,19 @@ namespace PRM392_Backend.Service.Payments
                     _repositoryManager.PaymentRepository.UpdatePayment(payment);
                     await _repositoryManager.Save();
 
+                    var notification = new Notification
+                    {
+                        ID = Guid.NewGuid(),
+                        UserID = userId,
+                        Message = "Order placed successfully! Please wait a moment; the delivery person will be there shortly.",
+                        IsActive = true,
+                        IsRead = false,
+                        CreatedAt = DateTime.Now
+                    };
+
+                    _repositoryManager.NotificationRepository.CreateNotification(notification);
+                    await _repositoryManager.Save();
+
                     return "The order has been paid.";
                 }
                 else
@@ -164,6 +177,19 @@ namespace PRM392_Backend.Service.Payments
                     //Update Payment
                     payment.PaymentStatus = PaymentStatus.Cancel.ToString();
                     _repositoryManager.PaymentRepository.UpdatePayment(payment);
+                    await _repositoryManager.Save();
+
+                    var notification = new Notification
+                    {
+                        ID = Guid.NewGuid(),
+                        UserID = userId,
+                        Message = "It seems that you have just canceled an order. Is there anything you weren't satisfied with? Feel free to explore other foods?",
+                        IsActive = true,
+                        IsRead = false,
+                        CreatedAt = DateTime.Now
+                    };
+
+                    _repositoryManager.NotificationRepository.CreateNotification(notification);
                     await _repositoryManager.Save();
 
                     return "The order has been canceled.";

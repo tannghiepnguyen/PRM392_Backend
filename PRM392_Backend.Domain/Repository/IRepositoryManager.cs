@@ -10,6 +10,7 @@
 		IOrderRepository OrderRepository { get; }
 		IChatMessageRepository ChatMessageRepository { get; }
 		IPaymentRepository PaymentRepository { get; }
+		INotificationRepository NotificationRepository { get; }
 		Task Save();
 	}
 }

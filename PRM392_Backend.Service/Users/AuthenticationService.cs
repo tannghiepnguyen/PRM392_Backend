@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using PRM392_Backend.Domain.Constant;
 using PRM392_Backend.Domain.Exceptions;
 using PRM392_Backend.Domain.Models;
+using PRM392_Backend.Domain.Repository;
 using PRM392_Backend.Service.Users.DTO;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -19,14 +20,16 @@ namespace PRM392_Backend.Service.Users
 		private readonly UserManager<User> userManager;
 		private readonly IMapper mapper;
 		private readonly IConfiguration configuration;
-		private User? user;
+        private readonly IRepositoryManager repositoryManager;
+        private User? user;
 
-		public AuthenticationService(UserManager<User> userManager, IMapper mapper, IConfiguration configuration)
+		public AuthenticationService(UserManager<User> userManager, IMapper mapper, IConfiguration configuration, IRepositoryManager repositoryManager)
 		{
 			this.userManager = userManager;
 			this.mapper = mapper;
 			this.configuration = configuration;
-		}
+            this.repositoryManager = repositoryManager;
+        }
 		public async Task<TokenDto> CreateToken(User user, bool populateExp)
 		{
             this.user = user; 
@@ -154,6 +157,20 @@ namespace PRM392_Backend.Service.Users
             if (result.Succeeded)
             {
                 await userManager.AddToRoleAsync(user, Roles.Customer);
+
+                var welcomeNotification = new Notification
+                {
+                    ID = Guid.NewGuid(),
+                    UserID = user.Id,
+                    Message = "Welcome to the Deliveroo App! We hope you have an exciting first experience. If you have any questions, please feel free to share your feedback with us!",
+                    IsActive = true,
+					IsRead = false,
+                    CreatedAt = DateTime.Now
+                };
+
+                repositoryManager.NotificationRepository.CreateNotification(welcomeNotification);
+                await repositoryManager.Save();
+
                 var tokenDto = await CreateToken(user, true); 
                 return (tokenDto, result);
             }
