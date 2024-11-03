@@ -16,21 +16,21 @@ namespace PRM392_Backend.API.Controllers
 		}
 
 		[HttpPost("register")]
-		public IActionResult Register([FromBody] UserForRegistrationDto userForRegistrationDTO)
+		public async Task<IActionResult> Register([FromBody] UserForRegistrationDto userForRegistrationDTO)
 		{
-			var result = serviceManager.AuthenticationService.RegisterUser(userForRegistrationDTO);
+            var (tokenDto, result) = await serviceManager.AuthenticationService.RegisterUser(userForRegistrationDTO);
 
-			if (!result.Result.Succeeded)
-			{
-				foreach (var error in result.Result.Errors)
+            if (!result.Succeeded)
+            {
+				foreach (var error in result.Errors)
 				{
 					ModelState.AddModelError(error.Code, error.Description);
 				}
 				return BadRequest(ModelState);
 			}
 
-			return StatusCode(201);
-		}
+            return StatusCode(201, tokenDto);
+        }
 
 		[HttpPost("login")]
 		public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto userForAuthenticationDTO)
@@ -40,7 +40,9 @@ namespace PRM392_Backend.API.Controllers
 				return Unauthorized();
 			}
 
-			var tokenDto = await serviceManager.AuthenticationService.CreateToken(true);
+            var user = await serviceManager.AuthenticationService.FindUserByUsername(userForAuthenticationDTO.UserName);
+
+            var tokenDto = await serviceManager.AuthenticationService.CreateToken(user, true);
 
 			return Ok(tokenDto);
 		}

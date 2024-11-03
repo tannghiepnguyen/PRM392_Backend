@@ -27,13 +27,14 @@ namespace PRM392_Backend.Service.Users
 			this.mapper = mapper;
 			this.configuration = configuration;
 		}
-		public async Task<TokenDto> CreateToken(bool populateExp)
+		public async Task<TokenDto> CreateToken(User user, bool populateExp)
 		{
-			var signingCredentials = GetSigningCredentials();
-			var claims = await GetClaims();
-			var tokenOptions = GenerateTokenOptions(signingCredentials, claims);
+            this.user = user; 
+            var signingCredentials = GetSigningCredentials();
+            var claims = await GetClaims(); 
+            var tokenOptions = GenerateTokenOptions(signingCredentials, claims);
 
-			var refreshToken = GenerateRefreshToken();
+            var refreshToken = GenerateRefreshToken();
 
 			this.user.RefreshToken = refreshToken;
 
@@ -67,13 +68,14 @@ namespace PRM392_Backend.Service.Users
 		{
 			var principal = GetPrincipalFromExpiredToken(tokenDto.AccessToken);
 
-			var user = await userManager.FindByNameAsync(principal.FindFirstValue("Username"));
-			if (user is null || user.RefreshToken != tokenDto.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.Now) throw new RefreshTokenBadRequest();
+            var user = await userManager.FindByNameAsync(principal.FindFirstValue("Username"));
+            if (user is null || user.RefreshToken != tokenDto.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
+                throw new RefreshTokenBadRequest();
 
-			this.user = user;
+            this.user = user;
 
-			return await CreateToken(false);
-		}
+            return await CreateToken(user, false);
+        }
 
 		private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
 		{
@@ -142,20 +144,22 @@ namespace PRM392_Backend.Service.Users
 			return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
 		}
 
-		public async Task<IdentityResult> RegisterUser(UserForRegistrationDto userForRegistration)
+        public async Task<(TokenDto tokenDto, IdentityResult result)> RegisterUser(UserForRegistrationDto userForRegistration)
 		{
 			var user = mapper.Map<User>(userForRegistration);
 			user.IsActive = true;
 
 			var result = await userManager.CreateAsync(user, userForRegistration.Password);
 
-			if (result.Succeeded)
-			{
-				await userManager.AddToRoleAsync(user, Roles.Customer);
-			}
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(user, Roles.Customer);
+                var tokenDto = await CreateToken(user, true); 
+                return (tokenDto, result);
+            }
 
-			return result;
-		}
+            return (null, result);
+        }
 
 		public async Task<bool> ValidateUser(UserForAuthenticationDto userForAuthentication)
 		{
@@ -183,7 +187,12 @@ namespace PRM392_Backend.Service.Users
 			return mapper.Map<UserForReturnDto>(user);
 		}
 
-		public async Task<IEnumerable<UserForReturnDto>> GetUsers()
+        public async Task<User> FindUserByUsername(string username)
+        {
+            return await userManager.FindByNameAsync(username);
+        }
+
+        public async Task<IEnumerable<UserForReturnDto>> GetUsers()
 		{
 			var users = await userManager.Users.ToListAsync();
 			return mapper.Map<IEnumerable<UserForReturnDto>>(users);
