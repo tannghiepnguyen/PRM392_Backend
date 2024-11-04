@@ -32,7 +32,7 @@ namespace PRM392_Backend.Infrastructure.Repository
 			return PagedList<Product>.ToPagedList(products, productParameters.PageNumber, productParameters.PageSize);
 		}
 
-		public async Task<Product?> GetProductById(Guid id, bool trackChange) => await FindByCondition(p => p.ID == id, trackChange).FirstOrDefaultAsync();
+        public async Task<Product?> GetProductById(Guid id, bool trackChange) => await FindByCondition(p => p.ID == id, trackChange).FirstOrDefaultAsync();
 
 		public async Task<PagedList<Product>> GetProducts(ProductParameters productParameters, bool trackChange)
 		{

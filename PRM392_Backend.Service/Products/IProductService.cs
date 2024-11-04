@@ -11,5 +11,5 @@ namespace PRM392_Backend.Service.Products
 		Task<(IEnumerable<ProductForReturnDto> products, MetaData metaData)> GetAllProducts(ProductParameters productParameters, bool trackChange);
 		Task<(IEnumerable<ProductForReturnDto> products, MetaData metaData)> GetActiveProducts(ProductParameters productParameters, bool trackChange);
 		Task<ProductForReturnDto?> GetProduct(Guid id, bool trackChange);
-	}
+    }
 }

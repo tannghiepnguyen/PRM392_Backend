@@ -12,8 +12,8 @@ using PRM392_Backend.Infrastructure.Persistance;
 namespace PRM392_Backend.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241030042454_AddBillingToOrder")]
-    partial class AddBillingToOrder
+    [Migration("20241104004211_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -310,6 +310,11 @@ namespace PRM392_Backend.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -322,30 +327,35 @@ namespace PRM392_Backend.Infrastructure.Migrations
                         {
                             ID = new Guid("5a2834d9-2630-4d1f-8126-daa29b800e78"),
                             CategoryName = "Burgers",
+                            ImageUrl = "https://firebasestorage.googleapis.com/v0/b/deliveroo-dab94.appspot.com/o/Splash%2Fburger.jpg?alt=media&token=4913b4f4-b37f-44a6-9fae-48beec255483",
                             IsActive = true
                         },
                         new
                         {
                             ID = new Guid("2d85ef10-9237-46e8-8131-955eb56c27f0"),
                             CategoryName = "Pizzas",
+                            ImageUrl = "https://firebasestorage.googleapis.com/v0/b/deliveroo-dab94.appspot.com/o/Splash%2Fpizza.jpg?alt=media&token=ae5cf452-4184-4b20-9f39-c1a49ca5b975",
                             IsActive = true
                         },
                         new
                         {
                             ID = new Guid("82de5b3d-ca35-420d-8e98-cc432b510201"),
-                            CategoryName = "Drinks",
+                            CategoryName = "Sushi",
+                            ImageUrl = "https://firebasestorage.googleapis.com/v0/b/deliveroo-dab94.appspot.com/o/Splash%2Fsushi.jpg?alt=media&token=c86cb412-e217-4f71-a64e-c6e17bc3d6c6",
                             IsActive = true
                         },
                         new
                         {
                             ID = new Guid("804563c3-05f3-4997-98fd-b23e4a310fb6"),
-                            CategoryName = "Desserts",
+                            CategoryName = "Italian",
+                            ImageUrl = "https://firebasestorage.googleapis.com/v0/b/deliveroo-dab94.appspot.com/o/Splash%2Fmiy.jpg?alt=media&token=dc0800c8-8415-4c2b-90f1-8e26756dc469",
                             IsActive = true
                         },
                         new
                         {
                             ID = new Guid("beffabc8-6f9f-4d08-b69a-8cb5226e8486"),
-                            CategoryName = "Chickens",
+                            CategoryName = "Chinese",
+                            ImageUrl = "https://firebasestorage.googleapis.com/v0/b/deliveroo-dab94.appspot.com/o/Splash%2Fchinese.jpg?alt=media&token=84155e4f-4949-4846-927a-5f0d7c08ed7b",
                             IsActive = true
                         });
                 });
@@ -378,12 +388,15 @@ namespace PRM392_Backend.Infrastructure.Migrations
 
             modelBuilder.Entity("PRM392_Backend.Domain.Models.Notification", b =>
                 {
-                    b.Property<Guid>("NotificationID")
+                    b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsRead")
                         .HasColumnType("bit");
@@ -393,10 +406,9 @@ namespace PRM392_Backend.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserID")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("NotificationID");
+                    b.HasKey("ID");
 
                     b.HasIndex("UserID");
 
@@ -455,7 +467,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("OrderID")
+                    b.Property<Guid?>("OrderID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("PaymentDate")
@@ -463,13 +475,13 @@ namespace PRM392_Backend.Infrastructure.Migrations
 
                     b.Property<string>("PaymentStatus")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
                     b.HasIndex("OrderID")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[OrderID] IS NOT NULL");
 
                     b.ToTable("Payments");
                 });
@@ -499,6 +511,9 @@ namespace PRM392_Backend.Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<Guid?>("OrderID")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
@@ -507,6 +522,9 @@ namespace PRM392_Backend.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<Guid?>("StoreID")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("TechnicalSpecification")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -514,6 +532,10 @@ namespace PRM392_Backend.Infrastructure.Migrations
                     b.HasKey("ID");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("OrderID");
+
+                    b.HasIndex("StoreID");
 
                     b.ToTable("Products");
 
@@ -700,7 +722,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("PRM392_Backend.Domain.Models.StoreLocation", b =>
+            modelBuilder.Entity("PRM392_Backend.Domain.Models.Store", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
@@ -713,13 +735,37 @@ namespace PRM392_Backend.Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<string>("StoreName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Stores");
+                });
+
+            modelBuilder.Entity("PRM392_Backend.Domain.Models.StoreLocation", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
 
                     b.Property<double>("Longitude")
                         .HasColumnType("float");
 
+                    b.Property<Guid>("StoreID")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("ID");
+
+                    b.HasIndex("StoreID");
 
                     b.ToTable("StoreLocations");
                 });
@@ -841,13 +887,12 @@ namespace PRM392_Backend.Infrastructure.Migrations
 
             modelBuilder.Entity("PRM392_Backend.Domain.Models.Notification", b =>
                 {
-                    b.HasOne("PRM392_Backend.Domain.Models.User", "User")
+                    b.HasOne("PRM392_Backend.Domain.Models.User", "Users")
                         .WithMany("Notifications")
                         .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("User");
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("PRM392_Backend.Domain.Models.Order", b =>
@@ -876,11 +921,11 @@ namespace PRM392_Backend.Infrastructure.Migrations
 
             modelBuilder.Entity("PRM392_Backend.Domain.Models.Payment", b =>
                 {
-                    b.HasOne("PRM392_Backend.Domain.Models.Order", null)
+                    b.HasOne("PRM392_Backend.Domain.Models.Order", "Order")
                         .WithOne("Payment")
-                        .HasForeignKey("PRM392_Backend.Domain.Models.Payment", "OrderID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PRM392_Backend.Domain.Models.Payment", "OrderID");
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("PRM392_Backend.Domain.Models.Product", b =>
@@ -890,7 +935,26 @@ namespace PRM392_Backend.Infrastructure.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("PRM392_Backend.Domain.Models.Order", null)
+                        .WithMany("Products")
+                        .HasForeignKey("OrderID");
+
+                    b.HasOne("PRM392_Backend.Domain.Models.Store", null)
+                        .WithMany("Products")
+                        .HasForeignKey("StoreID");
+
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("PRM392_Backend.Domain.Models.StoreLocation", b =>
+                {
+                    b.HasOne("PRM392_Backend.Domain.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Store");
                 });
 
             modelBuilder.Entity("PRM392_Backend.Domain.Models.Cart", b =>
@@ -910,11 +974,18 @@ namespace PRM392_Backend.Infrastructure.Migrations
                 {
                     b.Navigation("Payment")
                         .IsRequired();
+
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("PRM392_Backend.Domain.Models.Product", b =>
                 {
                     b.Navigation("CartItem");
+                });
+
+            modelBuilder.Entity("PRM392_Backend.Domain.Models.Store", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("PRM392_Backend.Domain.Models.StoreLocation", b =>

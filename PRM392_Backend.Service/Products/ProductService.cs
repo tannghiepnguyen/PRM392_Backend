@@ -66,7 +66,7 @@ namespace PRM392_Backend.Service.Products
 			return mapper.Map<ProductForReturnDto>(product);
 		}
 
-		public async Task UpdateProduct(Guid id, ProductForUpdateDto productForUpdateDto, bool trackChange)
+        public async Task UpdateProduct(Guid id, ProductForUpdateDto productForUpdateDto, bool trackChange)
 		{
 			var product = await repositoryManager.ProductRepository.GetProductById(id, trackChange);
 			if (product == null) throw new ProductNotFoundException(id);

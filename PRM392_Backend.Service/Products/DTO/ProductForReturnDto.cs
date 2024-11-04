@@ -9,6 +9,7 @@
 		public string TechnicalSpecification { get; init; }
 		public string ImageURL { get; init; }
 		public double Price { get; init; }
-		public bool IsActive { get; init; }
+        public Guid? CategoryId { get; set; }
+        public bool IsActive { get; init; }
 	}
 }

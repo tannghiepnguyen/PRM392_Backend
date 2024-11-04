@@ -20,7 +20,7 @@ namespace PRM392_Backend.API.Controllers
 		}
 
 		[HttpGet]
-		[Authorize(Roles = Roles.Admin)]
+		//[Authorize(Roles = Roles.Admin)]
 		public async Task<IActionResult> GetProducts([FromQuery] ProductParameters productParameters)
 		{
 			var pagedResult = await serviceManager.ProductService.GetAllProducts(productParameters, trackChange: false);

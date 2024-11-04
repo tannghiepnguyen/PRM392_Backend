@@ -23,7 +23,9 @@ namespace PRM392_Backend.Domain.Models
 		//[JsonConverter(typeof(JsonStringEnumConverter))]
 		//public OrderStatus OrderStatus { get; set; }
 		public string OrderStatus { get; set; }
-	}
+
+        public ICollection<Product> Products { get; set; }
+    }
 	[JsonConverter(typeof(JsonStringEnumConverter))]
 	public enum PaymentMethod
 	{

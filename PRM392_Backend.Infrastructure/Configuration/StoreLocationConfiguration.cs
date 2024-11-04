@@ -9,7 +9,7 @@ namespace PRM392_Backend.Infrastructure.Configuration
 		public void Configure(EntityTypeBuilder<StoreLocation> builder)
 		{
 			builder.HasKey(e => e.ID);
-			builder.Property(e => e.Address).IsRequired();
+			//builder.Property(e => e.Address).IsRequired();
 			builder.Property(e => e.Latitude).IsRequired();
 			builder.Property(e => e.Longitude).IsRequired();
 			builder.Property(e => e.IsActive).IsRequired();

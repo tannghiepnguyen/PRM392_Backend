@@ -25,6 +25,7 @@ namespace PRM392_Backend.Infrastructure.Persistance
 			modelBuilder.ApplyConfiguration(new NotificationConfiguration());
 			modelBuilder.ApplyConfiguration(new ChatMessageConfiguration());
 			modelBuilder.ApplyConfiguration(new StoreLocationConfiguration());
+			modelBuilder.ApplyConfiguration(new StoreConfiguration());
 			modelBuilder.ApplyConfiguration(new RoleConfiguration());
 		}
 
@@ -38,6 +39,7 @@ namespace PRM392_Backend.Infrastructure.Persistance
 		public DbSet<Notification> Notifications { get; set; }
 		public DbSet<ChatMessage> ChatMessages { get; set; }
 		public DbSet<StoreLocation> StoreLocations { get; set; }
+		public DbSet<Store> Stores { get; set; }
 
 	}
 }

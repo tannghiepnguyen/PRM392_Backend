@@ -14,6 +14,7 @@ namespace PRM392_Backend.Domain.Models
         public Order Order { get; set; }
 		public bool IsActive { get; set; }
 	}
+
 	public enum CartStatus
 	{
 		Unpaid,

@@ -21,17 +21,17 @@ namespace PRM392_Backend.Infrastructure.Configuration
 
 			builder.HasData(
 				new Product
-				{
-					ID = Guid.Parse("83c88bee-7638-4499-9a9c-49701b7db3e9"),
-					ProductName = "Classic Beef Burger",
-					BriefDescription = " A juicy beef patty with fresh lettuce, tomatoes, onions, and cheddar cheese, served on a sesame seed bun.",
-					FullDescription = "The Classic Beef Burger is a timeless favorite, featuring a perfectly seasoned, 100% beef patty grilled to perfection. Topped with crisp lettuce, ripe tomatoes, tangy pickles, and a slice of melted cheddar cheese, this burger is nestled between a toasted sesame seed bun. Each bite offers a mouthwatering combination of fresh, savory, and slightly tangy flavors, perfect for burger enthusiasts.",
-					TechnicalSpecification = "Beef, tomato, lettuce, mayonnaise, tomato sauce",
-					ImageURL = "https://prm392.blob.core.windows.net/prm392/ClassicBeefBurger.jpg",
-					Price = 8.99,
-					CategoryId = Guid.Parse("5a2834d9-2630-4d1f-8126-daa29b800e78"),
-					IsActive = true
-				},
+                {
+                    ID = Guid.Parse("83c88bee-7638-4499-9a9c-49701b7db3e9"),
+                    ProductName = "Classic Beef Burger",
+                    BriefDescription = " A juicy beef patty with fresh lettuce, tomatoes, onions, and cheddar cheese, served on a sesame seed bun.",
+                    FullDescription = "The Classic Beef Burger is a timeless favorite, featuring a perfectly seasoned, 100% beef patty grilled to perfection. Topped with crisp lettuce, ripe tomatoes, tangy pickles, and a slice of melted cheddar cheese, this burger is nestled between a toasted sesame seed bun. Each bite offers a mouthwatering combination of fresh, savory, and slightly tangy flavors, perfect for burger enthusiasts.",
+                    TechnicalSpecification = "Beef, tomato, lettuce, mayonnaise, tomato sauce",
+                    ImageURL = "https://prm392.blob.core.windows.net/prm392/ClassicBeefBurger.jpg",
+                    Price = 8.99,
+                    CategoryId = Guid.Parse("5a2834d9-2630-4d1f-8126-daa29b800e78"),
+                    IsActive = true
+                },
 				new Product
 				{
 					ID = Guid.Parse("3a1d5bae-ceda-48c0-af14-738874c3dfec"),
