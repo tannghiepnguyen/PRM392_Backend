@@ -36,12 +36,21 @@ namespace PRM392_Backend.Infrastructure.Repository
 
 		public async Task<PagedList<Product>> GetProducts(ProductParameters productParameters, bool trackChange)
 		{
-			var products = FindAll(trackChange);
+			var products = FindAll(trackChange)
+				.Include(x => x.Category)
+				.Include(x => x.Store) as IQueryable<Product>;
+
 			if (productParameters.CategoryId != Guid.Empty)
 			{
 				products = products.Where(p => p.CategoryId == productParameters.CategoryId);
 			}
-			if (!string.IsNullOrEmpty(productParameters.SearchTerm))
+
+            if (productParameters.StoreId != Guid.Empty)
+            {
+                products = products.Where(p => p.StoreId == productParameters.StoreId);
+            }
+
+            if (!string.IsNullOrEmpty(productParameters.SearchTerm))
 			{
 				var lowerCaseTerm = productParameters.SearchTerm.Trim().ToLower();
 				products = products.Where(p => p.ProductName.ToLower().Contains(lowerCaseTerm));

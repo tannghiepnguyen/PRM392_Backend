@@ -17,6 +17,7 @@ using PRM392_Backend.Service.Payments;
 using PRM392_Backend.Service.PayOSLib;
 using PRM392_Backend.Service.Products;
 using PRM392_Backend.Service.StoreLocations;
+using PRM392_Backend.Service.Stores;
 using PRM392_Backend.Service.Users;
 
 namespace PRM392_Backend.Service.Service
@@ -33,6 +34,7 @@ namespace PRM392_Backend.Service.Service
 		private readonly Lazy<IChatMessageService> chatMessageService;
         private readonly Lazy<IPaymentService> paymentService;
         private readonly Lazy<INotificationService> notificationService;
+        private readonly Lazy<IStoreService> storeService;
         public ServiceManager(PayOSService payOSService, IRepositoryManager repositoryManager, UserManager<User> userManager, IConfiguration configuration, IMapper mapper, IBlobService blobService, IHttpContextAccessor _httpContextAccessor, IHubContext<ChatHub> _hubContext)
 		{
 			authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(userManager, mapper, configuration, repositoryManager));
@@ -45,6 +47,7 @@ namespace PRM392_Backend.Service.Service
 			chatMessageService = new Lazy<IChatMessageService>(()=> new ChatMessageService(repositoryManager, mapper,_httpContextAccessor,_hubContext));
             paymentService = new Lazy<IPaymentService>(() => new PaymentService(repositoryManager, mapper, _httpContextAccessor, payOSService));
 			notificationService = new Lazy<INotificationService>(() => new NotificationService(repositoryManager, userManager, mapper, _httpContextAccessor));
+            storeService = new Lazy<IStoreService>(() => new StoreService(repositoryManager, mapper));
         }
 		public IAuthenticationService AuthenticationService => authenticationService.Value;
 		public ICategoryService CategoryService => categoryService.Value;
@@ -56,5 +59,6 @@ namespace PRM392_Backend.Service.Service
 		public IChatMessageService ChatMessageService => chatMessageService.Value;
         public IPaymentService PaymentService => paymentService.Value;
 		public INotificationService NotificationService => notificationService.Value;
+		public IStoreService StoreService => storeService.Value;
     }
 }

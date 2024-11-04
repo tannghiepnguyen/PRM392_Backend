@@ -12,8 +12,8 @@ using PRM392_Backend.Infrastructure.Persistance;
 namespace PRM392_Backend.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241104004211_Init")]
-    partial class Init
+    [Migration("20241104043614_AddNewTableStore")]
+    partial class AddNewTableStore
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -522,7 +522,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<Guid?>("StoreID")
+                    b.Property<Guid?>("StoreId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TechnicalSpecification")
@@ -535,7 +535,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
 
                     b.HasIndex("OrderID");
 
-                    b.HasIndex("StoreID");
+                    b.HasIndex("StoreId");
 
                     b.ToTable("Products");
 
@@ -550,6 +550,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                             IsActive = true,
                             Price = 8.9900000000000002,
                             ProductName = "Classic Beef Burger",
+                            StoreId = new Guid("deb70b97-b1fc-48f6-860c-fe9c15bcc4c7"),
                             TechnicalSpecification = "Beef, tomato, lettuce, mayonnaise, tomato sauce"
                         },
                         new
@@ -562,6 +563,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                             IsActive = true,
                             Price = 9.4900000000000002,
                             ProductName = "Spicy Chicken Burger",
+                            StoreId = new Guid("deb70b97-b1fc-48f6-860c-fe9c15bcc4c7"),
                             TechnicalSpecification = "Lettuce, pickles, spicy mayonnaise, chicken"
                         },
                         new
@@ -574,6 +576,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                             IsActive = true,
                             Price = 12.99,
                             ProductName = "Vegan Avocado Burger",
+                            StoreId = new Guid("deb70b97-b1fc-48f6-860c-fe9c15bcc4c7"),
                             TechnicalSpecification = "Avocado, vegan cheese, mixed greens, multigrain bun"
                         },
                         new
@@ -586,6 +589,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                             IsActive = true,
                             Price = 10.99,
                             ProductName = "Margherita Pizza",
+                            StoreId = new Guid("275dd30a-7b06-465a-9731-e0b75f2b4441"),
                             TechnicalSpecification = "Tomato sauce, mozzarella cheese, basil leaves"
                         },
                         new
@@ -598,6 +602,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                             IsActive = true,
                             Price = 12.99,
                             ProductName = "Pepperoni Pizza",
+                            StoreId = new Guid("275dd30a-7b06-465a-9731-e0b75f2b4441"),
                             TechnicalSpecification = "Tomato sauce, mozzarella cheese, pepperoni slices"
                         },
                         new
@@ -610,6 +615,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                             IsActive = true,
                             Price = 13.99,
                             ProductName = "Hawaiian Pizza",
+                            StoreId = new Guid("275dd30a-7b06-465a-9731-e0b75f2b4441"),
                             TechnicalSpecification = "Tomato sauce, mozzarella cheese, ham, pineapple chunks"
                         },
                         new
@@ -622,6 +628,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                             IsActive = true,
                             Price = 2.4900000000000002,
                             ProductName = "Classic Coke",
+                            StoreId = new Guid("0edc6c88-6d86-42e7-9e1c-ff5821f8e366"),
                             TechnicalSpecification = "Carbonated water, sugar, caffeine, natural flavors"
                         },
                         new
@@ -634,6 +641,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                             IsActive = true,
                             Price = 2.9900000000000002,
                             ProductName = "Iced Tea",
+                            StoreId = new Guid("0edc6c88-6d86-42e7-9e1c-ff5821f8e366"),
                             TechnicalSpecification = "Brewed tea leaves, sugar, lemon flavor"
                         },
                         new
@@ -646,6 +654,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                             IsActive = true,
                             Price = 2.9900000000000002,
                             ProductName = "Tropical Mango Smoothie",
+                            StoreId = new Guid("0edc6c88-6d86-42e7-9e1c-ff5821f8e366"),
                             TechnicalSpecification = "Fresh mango, pineapple, coconut milk, lime juice, ice"
                         },
                         new
@@ -658,6 +667,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                             IsActive = true,
                             Price = 5.9900000000000002,
                             ProductName = "Chocolate Brownie",
+                            StoreId = new Guid("0edc6c88-6d86-42e7-9e1c-ff5821f8e366"),
                             TechnicalSpecification = "Chocolate, flour, sugar, eggs, vanilla ice cream"
                         },
                         new
@@ -670,6 +680,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                             IsActive = true,
                             Price = 6.9900000000000002,
                             ProductName = "New York Cheesecake",
+                            StoreId = new Guid("b1658d47-bc38-4690-9035-85c2e2d85d7c"),
                             TechnicalSpecification = "Cream cheese, graham crackers, sugar, eggs, raspberry sauce"
                         },
                         new
@@ -682,6 +693,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                             IsActive = true,
                             Price = 7.9900000000000002,
                             ProductName = "Tiramisu",
+                            StoreId = new Guid("b1658d47-bc38-4690-9035-85c2e2d85d7c"),
                             TechnicalSpecification = "Ladyfingers, coffee, mascarpone cheese, cocoa powder"
                         },
                         new
@@ -694,6 +706,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                             IsActive = true,
                             Price = 9.9900000000000002,
                             ProductName = "Crispy Chicken Wings",
+                            StoreId = new Guid("036975aa-0bae-455a-a559-d0c914a43b27"),
                             TechnicalSpecification = "Chicken wings, flour, salt, pepper, sauce of choice"
                         },
                         new
@@ -706,6 +719,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                             IsActive = true,
                             Price = 10.99,
                             ProductName = "Crispy Chicken Tenders",
+                            StoreId = new Guid("036975aa-0bae-455a-a559-d0c914a43b27"),
                             TechnicalSpecification = "Chicken tenders, flour, salt, pepper, sauce of choice"
                         },
                         new
@@ -718,6 +732,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                             IsActive = true,
                             Price = 11.99,
                             ProductName = "Grilled Chicken Salad",
+                            StoreId = new Guid("036975aa-0bae-455a-a559-d0c914a43b27"),
                             TechnicalSpecification = "Grilled chicken breast, mixed greens, cherry tomatoes, cucumbers, balsamic vinaigrette"
                         });
                 });
@@ -743,6 +758,43 @@ namespace PRM392_Backend.Infrastructure.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Stores");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = new Guid("deb70b97-b1fc-48f6-860c-fe9c15bcc4c7"),
+                            Address = "123 Main St, District 1, Ho Chi Minh City",
+                            IsActive = true,
+                            StoreName = "Burger Haven"
+                        },
+                        new
+                        {
+                            ID = new Guid("275dd30a-7b06-465a-9731-e0b75f2b4441"),
+                            Address = "45 Sakura Ave, District 2, Ho Chi Minh City",
+                            IsActive = true,
+                            StoreName = "Pizza Paradise"
+                        },
+                        new
+                        {
+                            ID = new Guid("0edc6c88-6d86-42e7-9e1c-ff5821f8e366"),
+                            Address = "78 Elm St, District 3, Ho Chi Minh City",
+                            IsActive = true,
+                            StoreName = "Cool Refreshments"
+                        },
+                        new
+                        {
+                            ID = new Guid("b1658d47-bc38-4690-9035-85c2e2d85d7c"),
+                            Address = "12 Greenway Dr, District 5, Ho Chi Minh City",
+                            IsActive = true,
+                            StoreName = "Sweet Indulgence"
+                        },
+                        new
+                        {
+                            ID = new Guid("036975aa-0bae-455a-a559-d0c914a43b27"),
+                            Address = "99 Fiesta Ln, District 7, Ho Chi Minh City",
+                            IsActive = true,
+                            StoreName = "Crispy Corner"
+                        });
                 });
 
             modelBuilder.Entity("PRM392_Backend.Domain.Models.StoreLocation", b =>
@@ -939,11 +991,14 @@ namespace PRM392_Backend.Infrastructure.Migrations
                         .WithMany("Products")
                         .HasForeignKey("OrderID");
 
-                    b.HasOne("PRM392_Backend.Domain.Models.Store", null)
+                    b.HasOne("PRM392_Backend.Domain.Models.Store", "Store")
                         .WithMany("Products")
-                        .HasForeignKey("StoreID");
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Category");
+
+                    b.Navigation("Store");
                 });
 
             modelBuilder.Entity("PRM392_Backend.Domain.Models.StoreLocation", b =>

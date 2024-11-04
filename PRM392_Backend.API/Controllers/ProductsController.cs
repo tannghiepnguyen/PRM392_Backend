@@ -29,7 +29,6 @@ namespace PRM392_Backend.API.Controllers
 		}
 
 		[HttpGet("{id:guid}")]
-		[Authorize(Roles = Roles.Customer)]
 		public async Task<IActionResult> GetProduct([FromRoute] Guid id)
 		{
 			var product = await serviceManager.ProductService.GetProduct(id, trackChange: false);
@@ -45,7 +44,6 @@ namespace PRM392_Backend.API.Controllers
 		}
 
 		[HttpGet("active")]
-		[Authorize(Roles = Roles.Customer)]
 		public async Task<IActionResult> GetActiveProducts([FromQuery] ProductParameters productParameters)
 		{
 			var pagedResult = await serviceManager.ProductService.GetActiveProducts(productParameters, trackChange: false);

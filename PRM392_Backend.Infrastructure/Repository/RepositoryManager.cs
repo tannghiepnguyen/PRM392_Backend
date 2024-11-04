@@ -15,6 +15,8 @@ namespace PRM392_Backend.Infrastructure.Repository
 		private readonly Lazy<IChatMessageRepository> chatMessageRepository;
         private readonly Lazy<IPaymentRepository> paymentRepository;
         private readonly Lazy<INotificationRepository> notificationRepository;
+        private readonly Lazy<IStoreRepository> storeRepository;
+
         public RepositoryManager(DatabaseContext databaseContext)
 		{
 			context = databaseContext;
@@ -27,6 +29,7 @@ namespace PRM392_Backend.Infrastructure.Repository
 			chatMessageRepository = new Lazy<IChatMessageRepository> (() => new ChatMessageRepository(context));
             paymentRepository = new Lazy<IPaymentRepository>(() => new PaymentRepository(context));
             notificationRepository = new Lazy<INotificationRepository>(() => new NotificationRepository(context));
+            storeRepository = new Lazy<IStoreRepository>(() => new StoreRepository(context));
         }
 		public ICategoryRepository CategoryRepository => categoryRepository.Value;
 		public IStoreLocationRepository StoreLocationRepository => storeLocationRepository.Value;
@@ -37,6 +40,7 @@ namespace PRM392_Backend.Infrastructure.Repository
 		public IChatMessageRepository ChatMessageRepository => chatMessageRepository.Value;
         public IPaymentRepository PaymentRepository => paymentRepository.Value;
 		public INotificationRepository NotificationRepository => notificationRepository.Value;
+		public IStoreRepository StoreRepository => storeRepository.Value;
         public async Task Save() => await context.SaveChangesAsync();
 	}
 }

@@ -16,7 +16,8 @@ namespace PRM392_Backend.Infrastructure.Configuration
 			builder.Property(p => p.ImageURL).IsRequired();
 			builder.Property(p => p.Price).IsRequired();
 			builder.HasOne(p => p.Category).WithMany(c => c.Products).HasForeignKey(p => p.CategoryId).OnDelete(DeleteBehavior.Restrict);
-			builder.HasMany(p => p.CartItem).WithOne(ci => ci.Product).OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(p => p.Store).WithMany(c => c.Products).HasForeignKey(p => p.StoreId).OnDelete(DeleteBehavior.Restrict);
+            builder.HasMany(p => p.CartItem).WithOne(ci => ci.Product).OnDelete(DeleteBehavior.Restrict);
 			builder.Property(p => p.IsActive).IsRequired();
 
 			builder.HasData(
@@ -30,6 +31,7 @@ namespace PRM392_Backend.Infrastructure.Configuration
                     ImageURL = "https://prm392.blob.core.windows.net/prm392/ClassicBeefBurger.jpg",
                     Price = 8.99,
                     CategoryId = Guid.Parse("5a2834d9-2630-4d1f-8126-daa29b800e78"),
+					StoreId = Guid.Parse("deb70b97-b1fc-48f6-860c-fe9c15bcc4c7"),
                     IsActive = true
                 },
 				new Product
@@ -42,7 +44,8 @@ namespace PRM392_Backend.Infrastructure.Configuration
 					ImageURL = "https://prm392.blob.core.windows.net/prm392/SpicyChickenBurger.jpg",
 					Price = 9.49,
 					CategoryId = Guid.Parse("5a2834d9-2630-4d1f-8126-daa29b800e78"),
-					IsActive = true
+                    StoreId = Guid.Parse("deb70b97-b1fc-48f6-860c-fe9c15bcc4c7"),
+                    IsActive = true
 				},
 				new Product
 				{
@@ -54,7 +57,8 @@ namespace PRM392_Backend.Infrastructure.Configuration
 					ImageURL = "https://prm392.blob.core.windows.net/prm392/VeganAvocadoBurger.jpg",
 					Price = 12.99,
 					CategoryId = Guid.Parse("5a2834d9-2630-4d1f-8126-daa29b800e78"),
-					IsActive = true
+                    StoreId = Guid.Parse("deb70b97-b1fc-48f6-860c-fe9c15bcc4c7"),
+                    IsActive = true
 				},
 				new Product
 				{
@@ -66,7 +70,8 @@ namespace PRM392_Backend.Infrastructure.Configuration
 					ImageURL = "https://prm392.blob.core.windows.net/prm392/MargheritaPizza.jpg",
 					Price = 10.99,
 					CategoryId = Guid.Parse("2d85ef10-9237-46e8-8131-955eb56c27f0"),
-					IsActive = true
+                    StoreId = Guid.Parse("275dd30a-7b06-465a-9731-e0b75f2b4441"),
+                    IsActive = true
 				},
 				new Product
 				{
@@ -78,7 +83,8 @@ namespace PRM392_Backend.Infrastructure.Configuration
 					ImageURL = "https://prm392.blob.core.windows.net/prm392/PepperoniPizza.jpg",
 					Price = 12.99,
 					CategoryId = Guid.Parse("2d85ef10-9237-46e8-8131-955eb56c27f0"),
-					IsActive = true
+                    StoreId = Guid.Parse("275dd30a-7b06-465a-9731-e0b75f2b4441"),
+                    IsActive = true
 				},
 				new Product
 				{
@@ -90,7 +96,8 @@ namespace PRM392_Backend.Infrastructure.Configuration
 					ImageURL = "https://prm392.blob.core.windows.net/prm392/HawaiianPizza.jpg",
 					Price = 13.99,
 					CategoryId = Guid.Parse("2d85ef10-9237-46e8-8131-955eb56c27f0"),
-					IsActive = true
+                    StoreId = Guid.Parse("275dd30a-7b06-465a-9731-e0b75f2b4441"),
+                    IsActive = true
 				},
 				new Product
 				{
@@ -102,7 +109,8 @@ namespace PRM392_Backend.Infrastructure.Configuration
 					ImageURL = "https://prm392.blob.core.windows.net/prm392/ClassicCoke.jpg",
 					Price = 2.49,
 					CategoryId = Guid.Parse("82de5b3d-ca35-420d-8e98-cc432b510201"),
-					IsActive = true
+                    StoreId = Guid.Parse("0edc6c88-6d86-42e7-9e1c-ff5821f8e366"),
+                    IsActive = true
 				},
 				new Product
 				{
@@ -114,7 +122,8 @@ namespace PRM392_Backend.Infrastructure.Configuration
 					ImageURL = "https://prm392.blob.core.windows.net/prm392/IcedTea.jpg",
 					Price = 2.99,
 					CategoryId = Guid.Parse("82de5b3d-ca35-420d-8e98-cc432b510201"),
-					IsActive = true
+                    StoreId = Guid.Parse("0edc6c88-6d86-42e7-9e1c-ff5821f8e366"),
+                    IsActive = true
 				},
 				new Product
 				{
@@ -126,7 +135,8 @@ namespace PRM392_Backend.Infrastructure.Configuration
 					ImageURL = "https://prm392.blob.core.windows.net/prm392/TropicalMangoSmoothie.jpg",
 					Price = 2.99,
 					CategoryId = Guid.Parse("82de5b3d-ca35-420d-8e98-cc432b510201"),
-					IsActive = true
+                    StoreId = Guid.Parse("0edc6c88-6d86-42e7-9e1c-ff5821f8e366"),
+                    IsActive = true
 				},
 				new Product
 				{
@@ -138,7 +148,8 @@ namespace PRM392_Backend.Infrastructure.Configuration
 					ImageURL = "https://prm392.blob.core.windows.net/prm392/ChocolateBrownie.jpg",
 					Price = 5.99,
 					CategoryId = Guid.Parse("804563c3-05f3-4997-98fd-b23e4a310fb6"),
-					IsActive = true
+                    StoreId = Guid.Parse("0edc6c88-6d86-42e7-9e1c-ff5821f8e366"),
+                    IsActive = true
 				},
 				new Product
 				{
@@ -150,7 +161,8 @@ namespace PRM392_Backend.Infrastructure.Configuration
 					ImageURL = "https://prm392.blob.core.windows.net/prm392/NewYorkCheeseCake.jpg",
 					Price = 6.99,
 					CategoryId = Guid.Parse("804563c3-05f3-4997-98fd-b23e4a310fb6"),
-					IsActive = true
+                    StoreId = Guid.Parse("b1658d47-bc38-4690-9035-85c2e2d85d7c"),
+                    IsActive = true
 				},
 				new Product
 				{
@@ -162,7 +174,8 @@ namespace PRM392_Backend.Infrastructure.Configuration
 					ImageURL = "https://prm392.blob.core.windows.net/prm392/Tiramisu.jpg",
 					Price = 7.99,
 					CategoryId = Guid.Parse("804563c3-05f3-4997-98fd-b23e4a310fb6"),
-					IsActive = true
+                    StoreId = Guid.Parse("b1658d47-bc38-4690-9035-85c2e2d85d7c"),
+                    IsActive = true
 				},
 				new Product
 				{
@@ -174,7 +187,8 @@ namespace PRM392_Backend.Infrastructure.Configuration
 					ImageURL = "https://prm392.blob.core.windows.net/prm392/CrispyChickenWing.jpg",
 					Price = 9.99,
 					CategoryId = Guid.Parse("beffabc8-6f9f-4d08-b69a-8cb5226e8486"),
-					IsActive = true
+                    StoreId = Guid.Parse("036975aa-0bae-455a-a559-d0c914a43b27"),
+                    IsActive = true
 				},
 				new Product
 				{
@@ -186,7 +200,8 @@ namespace PRM392_Backend.Infrastructure.Configuration
 					ImageURL = "https://prm392.blob.core.windows.net/prm392/CrispyChickenTender.jpg",
 					Price = 10.99,
 					CategoryId = Guid.Parse("beffabc8-6f9f-4d08-b69a-8cb5226e8486"),
-					IsActive = true
+                    StoreId = Guid.Parse("036975aa-0bae-455a-a559-d0c914a43b27"),
+                    IsActive = true
 				},
 				new Product
 				{
@@ -198,7 +213,8 @@ namespace PRM392_Backend.Infrastructure.Configuration
 					ImageURL = "https://prm392.blob.core.windows.net/prm392/GrilledChickenSalad.jpg",
 					Price = 11.99,
 					CategoryId = Guid.Parse("beffabc8-6f9f-4d08-b69a-8cb5226e8486"),
-					IsActive = true
+                    StoreId = Guid.Parse("036975aa-0bae-455a-a559-d0c914a43b27"),
+                    IsActive = true
 				}
 			);
 		}

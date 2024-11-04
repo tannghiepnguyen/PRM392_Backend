@@ -7,6 +7,7 @@ using PRM392_Backend.Service.Orders;
 using PRM392_Backend.Service.Payments;
 using PRM392_Backend.Service.Products;
 using PRM392_Backend.Service.StoreLocations;
+using PRM392_Backend.Service.Stores;
 using PRM392_Backend.Service.Users;
 
 namespace PRM392_Backend.Service.IService
@@ -23,5 +24,6 @@ namespace PRM392_Backend.Service.IService
 		IChatMessageService ChatMessageService { get; }
 		IPaymentService PaymentService { get; }	
 		INotificationService NotificationService { get; }
+		IStoreService StoreService { get; }
 	}
 }

@@ -11,5 +11,6 @@ namespace PRM392_Backend.Service.Products.DTO
 		public IFormFile File { get; init; }
 		public double Price { get; init; }
 		public Guid CategoryId { get; init; }
+		public Guid StoreId { get; init; }
 	}
 }

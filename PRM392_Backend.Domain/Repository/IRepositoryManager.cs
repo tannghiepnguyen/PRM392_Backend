@@ -11,6 +11,7 @@
 		IChatMessageRepository ChatMessageRepository { get; }
 		IPaymentRepository PaymentRepository { get; }
 		INotificationRepository NotificationRepository { get; }
+		IStoreRepository StoreRepository { get; }
 		Task Save();
 	}
 }

@@ -18,23 +18,20 @@ namespace PRM392_Backend.API.Controllers
 		}
 
 		[HttpGet]
-		[Authorize(Roles = Roles.Admin)]
 		public async Task<IActionResult> GetCategories()
 		{
 			var categories = await serviceManager.CategoryService.GetAllCategories(trackChange: false);
 			return Ok(categories);
 		}
 
-		[HttpGet("active")]
-		[Authorize(Roles = Roles.Customer)]
+		[HttpGet("active")]	
 		public async Task<IActionResult> GetActiveCategories()
 		{
 			var categories = await serviceManager.CategoryService.GetActiveCategories(trackChange: false);
 			return Ok(categories);
 		}
 
-		[HttpGet("{id:guid}")]
-		[Authorize(Roles = Roles.Customer)]
+		[HttpGet("{id:guid}")]		
 		public async Task<IActionResult> GetCategory([FromRoute] Guid id)
 		{
 			var category = await serviceManager.CategoryService.GetCategory(id, trackChange: false);
