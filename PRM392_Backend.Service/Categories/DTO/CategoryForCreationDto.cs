@@ -3,5 +3,6 @@
 	public record CategoryForCreationDto
 	{
 		public string CategoryName { get; init; }
-	}
+        public string ImageUrl { get; set; }
+    }
 }

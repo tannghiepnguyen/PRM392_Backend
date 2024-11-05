@@ -3,6 +3,7 @@
 	public record CategoryForUpdateDto
 	{
 		public string CategoryName { get; init; }
-		public bool IsActive { get; init; }
+        public string ImageUrl { get; set; }
+        public bool IsActive { get; init; }
 	}
 }
