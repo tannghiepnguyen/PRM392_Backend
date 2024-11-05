@@ -12,6 +12,7 @@ namespace PRM392_Backend.Infrastructure.Configuration
 			builder.Property(e => e.StoreName).IsRequired().HasMaxLength(100);
 			builder.HasMany(e => e.Products).WithOne(e => e.Store).OnDelete(DeleteBehavior.Restrict);
 			builder.Property(e => e.Address).IsRequired();
+			builder.Property(e => e.ImageUrl).IsRequired();
 			builder.Property(e => e.IsActive).IsRequired();
 			builder.HasData(
                 new Store
@@ -19,6 +20,7 @@ namespace PRM392_Backend.Infrastructure.Configuration
                     ID = Guid.Parse("deb70b97-b1fc-48f6-860c-fe9c15bcc4c7"),
                     StoreName = "Burger Haven",
                     Address = "123 Main St, District 1, Ho Chi Minh City",
+                    ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRRL5AQ1LfPEz2Lvc0fjQhFYCmQ09vVmpzpA&s",
                     IsActive = true
                 },
                 new Store
@@ -26,6 +28,7 @@ namespace PRM392_Backend.Infrastructure.Configuration
                     ID = Guid.Parse("275dd30a-7b06-465a-9731-e0b75f2b4441"),
                     StoreName = "Pizza Paradise",
                     Address = "45 Sakura Ave, District 2, Ho Chi Minh City",
+                    ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1_Yesq9xjLKw2mvgZNgk0BcjtZ8_9rzg8jg&s",
                     IsActive = true
                 },
                 new Store
@@ -33,6 +36,7 @@ namespace PRM392_Backend.Infrastructure.Configuration
                     ID = Guid.Parse("0edc6c88-6d86-42e7-9e1c-ff5821f8e366"),
                     StoreName = "Cool Refreshments",
                     Address = "78 Elm St, District 3, Ho Chi Minh City",
+                    ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROBn_ESD2kvsswrE6qRJOM1IPhS8JtBE4ddQ&s",
                     IsActive = true
                 },
                 new Store
@@ -40,6 +44,7 @@ namespace PRM392_Backend.Infrastructure.Configuration
                     ID = Guid.Parse("b1658d47-bc38-4690-9035-85c2e2d85d7c"),
                     StoreName = "Sweet Indulgence",
                     Address = "12 Greenway Dr, District 5, Ho Chi Minh City",
+                    ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSwI0EgrEZKcx6VRufT4vhMgjDQL35kdv8GA&s",
                     IsActive = true
                 },
                 new Store
@@ -47,6 +52,7 @@ namespace PRM392_Backend.Infrastructure.Configuration
                     ID = Guid.Parse("036975aa-0bae-455a-a559-d0c914a43b27"),
                     StoreName = "Crispy Corner",
                     Address = "99 Fiesta Ln, District 7, Ho Chi Minh City",
+                    ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDStT3T--pHLciOb93FLN1Nlmvp8Bzqg3wPw&s",
                     IsActive = true
                 }              
             );

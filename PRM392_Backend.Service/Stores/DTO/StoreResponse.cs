@@ -11,6 +11,7 @@ namespace PRM392_Backend.Service.Stores.DTO
         public Guid ID { get; set; }
         public string StoreName { get; set; }
         public string Address { get; set; }
+        public string ImageUrl { get; set; }
         public bool IsActive { get; set; }
     }
 }
