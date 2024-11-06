@@ -3,6 +3,7 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Converters;
 using PRM392_Backend.API;
 using PRM392_Backend.API.Extensions;
+using PRM392_Backend.Service.ChatHubs;
 using PRM392_Backend.Service.Extension;
 using PRM392_Backend.Service.PayOSLib;
 
@@ -88,6 +89,8 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddBlobService(builder.Configuration);
 
 var app = builder.Build();
+
+app.MapHub<ChatHub>("/chatHub");
 
 app.UseExceptionHandler(opt => { });
 
