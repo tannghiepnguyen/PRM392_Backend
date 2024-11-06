@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 using PRM392_Backend.Domain.Models;
 using PRM392_Backend.Domain.PagedList;
 using PRM392_Backend.Domain.Parameters;
@@ -60,13 +59,5 @@ namespace PRM392_Backend.Infrastructure.Repository
 
 			return PagedList<Product>.ToPagedList(products, productParameters.PageNumber, productParameters.PageSize);
 		}
-
-        public async Task<IEnumerable<Product>> GetAllProducts(bool trackChange)
-        {
-            return await FindByCondition(p => p.IsActive, trackChange)
-                        .Include(x => x.Category) 
-                        .Include(x => x.Store)    
-                        .ToListAsync();           
-        }
-    }
+	}
 }
