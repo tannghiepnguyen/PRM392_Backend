@@ -12,8 +12,8 @@ using PRM392_Backend.Infrastructure.Persistance;
 namespace PRM392_Backend.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241105210141_AddImageUrlToStore")]
-    partial class AddImageUrlToStore
+    [Migration("20241105225930_AddStoreRating")]
+    partial class AddStoreRating
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -754,6 +754,9 @@ namespace PRM392_Backend.Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
                     b.Property<string>("StoreName")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -770,6 +773,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                             Address = "123 Main St, District 1, Ho Chi Minh City",
                             ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRRL5AQ1LfPEz2Lvc0fjQhFYCmQ09vVmpzpA&s",
                             IsActive = true,
+                            Rating = 5,
                             StoreName = "Burger Haven"
                         },
                         new
@@ -778,6 +782,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                             Address = "45 Sakura Ave, District 2, Ho Chi Minh City",
                             ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1_Yesq9xjLKw2mvgZNgk0BcjtZ8_9rzg8jg&s",
                             IsActive = true,
+                            Rating = 4,
                             StoreName = "Pizza Paradise"
                         },
                         new
@@ -786,6 +791,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                             Address = "78 Elm St, District 3, Ho Chi Minh City",
                             ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROBn_ESD2kvsswrE6qRJOM1IPhS8JtBE4ddQ&s",
                             IsActive = true,
+                            Rating = 5,
                             StoreName = "Cool Refreshments"
                         },
                         new
@@ -794,6 +800,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                             Address = "12 Greenway Dr, District 5, Ho Chi Minh City",
                             ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSwI0EgrEZKcx6VRufT4vhMgjDQL35kdv8GA&s",
                             IsActive = true,
+                            Rating = 4,
                             StoreName = "Sweet Indulgence"
                         },
                         new
@@ -802,7 +809,98 @@ namespace PRM392_Backend.Infrastructure.Migrations
                             Address = "99 Fiesta Ln, District 7, Ho Chi Minh City",
                             ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDStT3T--pHLciOb93FLN1Nlmvp8Bzqg3wPw&s",
                             IsActive = true,
+                            Rating = 4,
                             StoreName = "Crispy Corner"
+                        },
+                        new
+                        {
+                            ID = new Guid("b7b2e729-13b0-44cf-b4f9-616bffebda5d"),
+                            Address = "456 Pham Ngoc Thach St, District 3, Ho Chi Minh City",
+                            ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQigCssnKf-N2zAzzOsWJtl6_A_J1t1oPjig&s",
+                            IsActive = true,
+                            Rating = 4,
+                            StoreName = "The Burger Joint"
+                        },
+                        new
+                        {
+                            ID = new Guid("4fbb2d9c-9eb2-4098-aed3-bbb7303e58c5"),
+                            Address = "22 Nguyen Thi Minh Khai St, District 1, Ho Chi Minh City",
+                            ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6YlQuV6RqkMK4oQPLkZGwf50JO-0owQaQKg&s",
+                            IsActive = true,
+                            Rating = 5,
+                            StoreName = "Alfredo's Pizzeria"
+                        },
+                        new
+                        {
+                            ID = new Guid("df8b5e1a-c3b3-47e0-b59f-7c559b3bde59"),
+                            Address = "58 Le Loi St, District 1, Ho Chi Minh City",
+                            ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWJbbHgN1qGYIeMiAqYxFiavSbahUYHE0e2g&s",
+                            IsActive = true,
+                            Rating = 5,
+                            StoreName = "Trattoria Antonio"
+                        },
+                        new
+                        {
+                            ID = new Guid("fd9dbb8e-6f91-45c9-bb9e-517bd4d129ab"),
+                            Address = "25 Le Thanh Ton St, District 1, Ho Chi Minh City",
+                            ImageUrl = "https://sushiworld.com.vn/wp-content/uploads/2020/10/logo-sushi-world.png",
+                            IsActive = true,
+                            Rating = 4,
+                            StoreName = "Sushi World"
+                        },
+                        new
+                        {
+                            ID = new Guid("6d2f69e3-678b-4937-bd1d-06e9b37056e0"),
+                            Address = "18 Nguyen Thi Minh Khai St, District 1, Ho Chi Minh City",
+                            ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-4e_x-a_vkQT8gM247nyzTaksk99MInwAXA&s",
+                            IsActive = true,
+                            Rating = 5,
+                            StoreName = "Ming's Chinese Restaurant"
+                        },
+                        new
+                        {
+                            ID = new Guid("6d0ab2e1-5b77-4d9a-b678-63f1a52cf274"),
+                            Address = "34 Le Lai St, District 1, Ho Chi Minh City",
+                            ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJeYIrTFi95VInO-ft4pLYqMUSvzE_iWcu9A&s",
+                            IsActive = true,
+                            Rating = 5,
+                            StoreName = "Shogun Burger"
+                        },
+                        new
+                        {
+                            ID = new Guid("c3e07e4f-118e-43c5-9a3e-66057c5bc038"),
+                            Address = "100 Nguyen Thi Minh Khai, District 1, Ho Chi Minh City",
+                            ImageUrl = "https://play-lh.googleusercontent.com/vDn0tgGBTcZ_Q8QhSdjuhvMNA4GUJK8VS_pZ0Fy-miUMDodMNeUbDfjMGEwFB1vERPQ",
+                            IsActive = true,
+                            Rating = 4,
+                            StoreName = "The Pizza Company"
+                        },
+                        new
+                        {
+                            ID = new Guid("ec2d6842-2177-4852-8f3e-52d99ed8a1b5"),
+                            Address = "17A Hai Ba Trung St, District 1, Ho Chi Minh City",
+                            ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhoacfNPgi_5pAVK08-wLGYwLfaE3FsqNA1w&s",
+                            IsActive = true,
+                            Rating = 5,
+                            StoreName = "Cucina Italian Restaurant"
+                        },
+                        new
+                        {
+                            ID = new Guid("ad94e519-8ee5-442e-b013-df96cb74594b"),
+                            Address = "27 Ton Duc Thang St, District 1, Ho Chi Minh City",
+                            ImageUrl = "https://www.sushiteivietnam.com/wp-content/uploads/2024/08/logo-scaled.webp",
+                            IsActive = true,
+                            Rating = 4,
+                            StoreName = "Sushi Tei"
+                        },
+                        new
+                        {
+                            ID = new Guid("d13d2d4a-639d-4f28-a073-d3eaf8c2a3f6"),
+                            Address = "5 Le Duan St, District 1, Ho Chi Minh City",
+                            ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR11F0IgZlK1JbWkggHGMf2GxTr64MAt3HfQ&s",
+                            IsActive = true,
+                            Rating = 5,
+                            StoreName = "Kong's Asian Cuisine Restaurant"
                         });
                 });
 

@@ -40,7 +40,6 @@ namespace PRM392_Backend.Service.Orders
             return mapper.Map<IEnumerable<OrderResponse>>(orders);
         }
 
-
         public async Task<Order?> GetOrder(Guid id, bool trackChange)
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

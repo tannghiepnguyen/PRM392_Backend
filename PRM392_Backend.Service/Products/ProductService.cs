@@ -6,7 +6,10 @@ using PRM392_Backend.Domain.PagedList;
 using PRM392_Backend.Domain.Parameters;
 using PRM392_Backend.Domain.Repository;
 using PRM392_Backend.Service.IService;
+using PRM392_Backend.Service.Orders.DTO;
 using PRM392_Backend.Service.Products.DTO;
+using PRM392_Backend.Service.Stores.DTO;
+using System.Security.Claims;
 
 namespace PRM392_Backend.Service.Products
 {
@@ -51,14 +54,21 @@ namespace PRM392_Backend.Service.Products
 			return (productsReturnDto, productsWithMetadata.MetaData);
 		}
 
-		public async Task<(IEnumerable<ProductForReturnDto> products, MetaData metaData)> GetAllProducts(ProductParameters productParameters, bool trackChange)
+		public async Task<(IEnumerable<ProductForReturnDto> products, MetaData metaData)> GetProducts(ProductParameters productParameters, bool trackChange)
 		{
 			var productsWithMetadata = await repositoryManager.ProductRepository.GetProducts(productParameters, trackChange);
 			var productsReturnDto = mapper.Map<IEnumerable<ProductForReturnDto>>(productsWithMetadata);
 			return (productsReturnDto, productsWithMetadata.MetaData);
 		}
 
-		public async Task<ProductForReturnDto?> GetProduct(Guid id, bool trackChange)
+        public async Task<IEnumerable<ProductForReturnDto>> GetAllProducts(bool trackChange)
+        {
+            var products = await repositoryManager.ProductRepository.GetAllProducts(trackChange);
+            var productsDto = mapper.Map<IEnumerable<ProductForReturnDto>>(products);
+            return productsDto;
+        }
+
+        public async Task<ProductForReturnDto?> GetProduct(Guid id, bool trackChange)
 		{
 			var product = await repositoryManager.ProductRepository.GetProductById(id, trackChange);
 			if (product == null) throw new ProductNotFoundException(id);

@@ -19,16 +19,24 @@ namespace PRM392_Backend.API.Controllers
 			this.serviceManager = serviceManager;
 		}
 
-		[HttpGet]
+		[HttpGet("get-pagedlist-products")]
 		//[Authorize(Roles = Roles.Admin)]
 		public async Task<IActionResult> GetProducts([FromQuery] ProductParameters productParameters)
 		{
-			var pagedResult = await serviceManager.ProductService.GetAllProducts(productParameters, trackChange: false);
+			var pagedResult = await serviceManager.ProductService.GetProducts(productParameters, trackChange: false);
 			Response.Headers.Append("X-Pagination", JsonSerializer.Serialize(pagedResult.metaData));
 			return Ok(pagedResult.products);
 		}
 
-		[HttpGet("{id:guid}")]
+        [HttpGet("get-all-products")]
+        //[Authorize(Roles = Roles.Admin)]
+        public async Task<IActionResult> GetAllProducts([FromQuery] bool trackChange)
+        {
+            var products = await serviceManager.ProductService.GetAllProducts(trackChange);
+            return Ok(products);
+        }
+
+        [HttpGet("{id:guid}")]
 		public async Task<IActionResult> GetProduct([FromRoute] Guid id)
 		{
 			var product = await serviceManager.ProductService.GetProduct(id, trackChange: false);
