@@ -14,7 +14,7 @@ namespace PRM392_Backend.Infrastructure.Configuration
 			builder.HasOne(e => e.Cart)
 				.WithMany(e => e.CartItems)
 				.HasForeignKey(e => e.CartID)
-				.OnDelete(DeleteBehavior.Restrict);
+				.OnDelete(DeleteBehavior.Cascade);
 			builder.HasOne(e => e.Product).WithMany(e => e.CartItem).HasForeignKey(e => e.ProductID).OnDelete(DeleteBehavior.Restrict);
 		}
 	}

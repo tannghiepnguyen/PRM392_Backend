@@ -15,9 +15,11 @@ namespace PRM392_Backend.Infrastructure.Repository
         public StoreRepository(DatabaseContext context) : base(context)
         {
         }
-        public async Task<IEnumerable<Store>> GetStores(bool trackChange) => await FindAll(trackChange).ToListAsync();
+        public async Task<IEnumerable<Store>> GetStores(bool trackChange) => await FindAll(trackChange)
+             .OrderByDescending(s => s.Rating)
+             .ToListAsync();
 
-        public async Task<Store?> GetProductsByStoreId(Guid id, bool trackChange) 
+        public async Task<Store?> GetProductsByStoreId(Guid id, bool trackChange)
             => await FindByCondition(x => x.ID == id, trackChange)
             .Include(x => x.Products)
             .ThenInclude(p => p.Category)

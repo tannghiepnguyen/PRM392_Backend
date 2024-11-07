@@ -69,11 +69,20 @@ namespace PRM392_Backend.Infrastructure.Repository
         //}
         public void HardDeleteCartItem(Guid id, bool trackChange)
         {
+            // Tìm kiếm CartItem với ID tương ứng
             var cartItem = FindByCondition(x => x.ID == id, trackChange).SingleOrDefault();
+
+            // Kiểm tra xem CartItem có tồn tại không
             if (cartItem != null)
             {
-                Delete(cartItem); // Sử dụng phương thức Delete từ RepositoryBase để xóa thật sự
+                // Xóa CartItem
+                Delete(cartItem);
+            }
+            else
+            {
+                throw new InvalidOperationException($"CartItem with ID {id} not found.");
             }
         }
+
     }
 }

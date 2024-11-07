@@ -14,7 +14,7 @@ namespace PRM392_Backend.Service.CartItems.DTO
 
         // Quantity must be greater than 0
         [Required(ErrorMessage = "Quantity is required.")]
-        [Range(1, int.MaxValue, ErrorMessage = "Quantity must be greater than 0.")]
+        [Range(0, int.MaxValue, ErrorMessage = "Quantity must be greater than 0.")]
         public int Quantity { get; set; }
 
     }

@@ -60,7 +60,7 @@ namespace PRM392_Backend.Infrastructure.Repository
         /// <param name="trackChange">Có theo dõi thay đổi hay không.</param>
         /// <returns>Đối tượng giỏ hàng hoặc null nếu không tìm thấy.</returns>
         public async Task<Cart?> GetCartById(Guid? id, bool trackChange) =>
-            await FindByCondition(x => x.ID == id, trackChange).Include(cart => cart.CartItems) // Tải CartItems
+            await FindByCondition(x => x.ID == id && x.IsActive, trackChange).Include(cart => cart.CartItems) // Tải CartItems
           .ThenInclude(cartItem => cartItem.Product).SingleOrDefaultAsync();
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace PRM392_Backend.Infrastructure.Repository
         /// <param name="id">ID của giỏ hàng cần xóa.</param>
         public void DeleteCart(Guid id, bool trackChange)
         {
-            var cart = FindByCondition(x => x.ID == id, trackChange).SingleOrDefault();
+            var cart = FindByCondition(x => x.ID == id && x.IsActive, trackChange).SingleOrDefault();
             if (cart != null)
             {
                 cart.IsActive = false; // Thực hiện soft delete
@@ -84,12 +84,25 @@ namespace PRM392_Backend.Infrastructure.Repository
         }
         public void HardDeleteCart(Guid id, bool trackChange)
         {
-            var cart = FindByCondition(x => x.ID == id, trackChange).SingleOrDefault();
+            var cart = FindByCondition(x => x.ID == id && x.IsActive, trackChange).SingleOrDefault();
+
             if (cart != null)
             {
-                Delete(cart); // Sử dụng phương thức Delete từ RepositoryBase để xóa thật sự
+                // Kiểm tra CartItems có null hay không trước khi xóa
+                if (cart.CartItems != null)
+                {
+                    foreach (var cartItem in cart.CartItems.ToList()) 
+                    {
+                        _context.CartItems.Remove(cartItem);
+                    }
+                }
+
+                // Sau khi xóa tất cả CartItems, xóa giỏ hàng
+                Delete(cart);
             }
         }
+
+
         /// <summary>
         /// Lấy giỏ hàng đang hoạt động theo UserID.
         /// </summary>

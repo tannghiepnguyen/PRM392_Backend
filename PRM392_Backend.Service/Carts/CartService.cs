@@ -179,8 +179,25 @@ namespace PRM392_Backend.Service.Carts
         /// <param name="trackChange">Có theo dõi thay đổi hay không.</param>
         public async Task HardDeleteCartAsync(Guid id, bool trackChange = false)
         {
-            repositoryManager.CartRepository.HardDeleteCart(id, trackChange);
-            await repositoryManager.Save();
+            var cart = await repositoryManager.CartRepository.GetCartById(id, trackChange);
+
+            if (cart != null)
+            {
+                // Đảm bảo rằng CartItems không phải null trước khi xóa
+                if (cart.CartItems != null && cart.CartItems.Any())
+                {
+                    repositoryManager.CartRepository.HardDeleteCart(id, trackChange);
+                    await repositoryManager.Save();
+                }
+                else
+                {
+                    throw new InvalidOperationException("Không thể xóa giỏ hàng khi không có sản phẩm trong giỏ.");
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Giỏ hàng không tồn tại.");
+            }
         }
     }
 }

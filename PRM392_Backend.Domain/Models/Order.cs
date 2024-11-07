@@ -13,7 +13,8 @@ namespace PRM392_Backend.Domain.Models
 		public string? UserID { get; set; }
 		public User User { get; set; }
 		public Guid? StoreLocationID { get; set; }
-		public StoreLocation StoreLocation { get; set; }
+        [JsonIgnore]
+        public StoreLocation StoreLocation { get; set; }
 		public DateTime OrderDate { get; set; }
 
 		//[JsonConverter(typeof(JsonStringEnumConverter))]
@@ -24,6 +25,7 @@ namespace PRM392_Backend.Domain.Models
 		//public OrderStatus OrderStatus { get; set; }
 		public string OrderStatus { get; set; }
 
+        [JsonIgnore]
         public ICollection<Product> Products { get; set; }
     }
 	[JsonConverter(typeof(JsonStringEnumConverter))]

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using PRM392_Backend.Domain.Exceptions;
 using PRM392_Backend.Domain.Models;
 using PRM392_Backend.Domain.Repository;
@@ -66,7 +67,27 @@ namespace PRM392_Backend.Service.Orders
             }
             var storeLocationExist = await repositoryManager.StoreLocationRepository.GetStoreLocationById(orderDTO.StoreLocationID,true);
             repositoryManager.OrderRepository.CreateOrder(order);
-            await repositoryManager.Save();
+            try
+            {
+                await repositoryManager.Save();
+            }
+            catch (DbUpdateException ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                }
+
+                // Nếu có thêm thông tin cụ thể về entity gặp lỗi
+                foreach (var entry in ex.Entries)
+                {
+                    Console.WriteLine($"Entity: {entry.Entity.GetType().Name}, State: {entry.State}");
+                }
+
+                throw; // Ném lại ngoại lệ để xử lý ở cấp cao hơn nếu cần
+            }
+
             return order;
         }
 

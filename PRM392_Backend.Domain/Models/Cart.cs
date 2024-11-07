@@ -9,7 +9,9 @@ namespace PRM392_Backend.Domain.Models
 		public User User { get; set; }
 		public double TotalPrice { get; set; }
 		public string Status { get; set; }
-		public ICollection<CartItem> CartItems { get; set; }
+
+        [JsonIgnore]
+        public ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
         [JsonIgnore]
         public Order Order { get; set; }
 		public bool IsActive { get; set; }

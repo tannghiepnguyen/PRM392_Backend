@@ -9,7 +9,8 @@ namespace PRM392_Backend.Domain.Models
 		[JsonIgnore]
 		public Cart Cart { get; set; }
 		public Guid? ProductID { get; set; }
-		public Product Product { get; set; }
+        [JsonIgnore]
+        public Product Product { get; set; }
 		public int Quantity { get; set; }
 		public double Price { get; set; }
 	}

@@ -52,13 +52,11 @@ namespace PRM392_Backend.API.Controllers
 
         // POST: api/Orders
         [HttpPost]
-        public async Task<IActionResult> CreateOrder([FromForm] OrderRequestForCreate orderForCreationDto)
+        public async Task<IActionResult> CreateOrder([FromBody] OrderRequestForCreate orderForCreationDto)
         {
             var order = await serviceManager.OrderService.CreateOrder(orderForCreationDto);
             return CreatedAtAction(nameof(GetOrder), new { id = order.ID }, order);
         }
-
-
 
 
         // PUT: api/Orders/{id}

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PRM392_Backend.Infrastructure.Persistance;
 
@@ -11,9 +12,11 @@ using PRM392_Backend.Infrastructure.Persistance;
 namespace PRM392_Backend.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20241107213152_update")]
+    partial class update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1060,7 +1063,7 @@ namespace PRM392_Backend.Infrastructure.Migrations
                     b.HasOne("PRM392_Backend.Domain.Models.Cart", "Cart")
                         .WithOne("Order")
                         .HasForeignKey("PRM392_Backend.Domain.Models.Order", "CartID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("PRM392_Backend.Domain.Models.StoreLocation", "StoreLocation")
                         .WithMany("Orders")
