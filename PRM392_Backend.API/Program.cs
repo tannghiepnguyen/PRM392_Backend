@@ -95,7 +95,7 @@ app.MapHub<ChatHub>("/chatHub");
 
 app.UseExceptionHandler(opt => { });
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP reque+st pipeline.
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {

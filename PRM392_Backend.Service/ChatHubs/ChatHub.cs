@@ -5,36 +5,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace PRM392_Backend.Service.ChatHubs
 {
     public class ChatHub : Hub
     {
+        private static readonly Dictionary<string, string> userConnections = new();
+
         public async Task SendMessage(string userId, string message)
         {
-            var chatMessage = new ChatMessage
+            var connectionId = userConnections[userId];
+            if (connectionId != null)
             {
-                UserID = userId,
-                Message = message,
-                SentdAt = DateTime.Now,
-                IsActive = true
-            };
-            await Clients.All.SendAsync("ReceiveMessage", userId, message, chatMessage.SentdAt);
+                await Clients.Client(connectionId).SendAsync("ReceiveMessage", userId, message, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            }
         }
 
         public override async Task OnConnectedAsync()
         {
+            var userId = Context.GetHttpContext().Request.Query["userId"];
+            userConnections[userId] = Context.ConnectionId;
             await base.OnConnectedAsync();
         }
 
-        public override async Task OnDisconnectedAsync(Exception? exception)
+        public override async Task OnDisconnectedAsync(Exception exception)
         {
+            var userId = Context.GetHttpContext().Request.Query["userId"];
+            userConnections.Remove(userId);
             await base.OnDisconnectedAsync(exception);
-        }
-
-        public async Task NotifyTyping(string userId)
-        {
-            await Clients.Others.SendAsync("UserTyping", userId);
         }
     }
 }

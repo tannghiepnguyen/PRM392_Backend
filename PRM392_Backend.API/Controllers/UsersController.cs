@@ -18,7 +18,7 @@ namespace PRM392_Backend.API.Controllers
 		}
 
 		[HttpGet]
-		[Authorize(Roles = Roles.Admin)]
+		[Authorize(Roles = Roles.Customer)]
 		public async Task<IActionResult> GetUsers()
 		{
 			var users = await serviceManager.AuthenticationService.GetUsers();

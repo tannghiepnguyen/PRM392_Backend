@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using PRM392_Backend.Domain.Models;
+using PRM392_Backend.Service.ChatHubs;
 using PRM392_Backend.Service.ChatMessages;
 using PRM392_Backend.Service.ChatMessages.DTO;
 using PRM392_Backend.Service.IService;
@@ -11,9 +14,11 @@ namespace PRM392_Backend.API.Controllers
     public class ChatMessagesController : ControllerBase
     {
         private readonly IServiceManager serviceManager;
+        private readonly IHubContext<ChatHub> _hubContext;
 
-        public ChatMessagesController(IServiceManager serviceManager)
+        public ChatMessagesController(IHubContext<ChatHub> hubContext, IServiceManager serviceManager)
         {
+            _hubContext = hubContext;
             this.serviceManager = serviceManager;
         }
 
@@ -42,6 +47,10 @@ namespace PRM392_Backend.API.Controllers
         public async Task<IActionResult> CreateChatMessage([FromBody] ChatMessageDTORequest chatMessageCreateRequest)
         {
             await serviceManager.ChatMessageService.CreateChatMessageAsync(chatMessageCreateRequest);
+
+            await _hubContext.Clients.All.SendAsync("ReceiveMessage", chatMessageCreateRequest.UserID, chatMessageCreateRequest.Message, DateTime.Now);
+
+            // Trả về HTTP OK khi thành công
             return Ok();
         }
 
