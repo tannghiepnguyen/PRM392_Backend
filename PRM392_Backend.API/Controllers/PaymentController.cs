@@ -33,7 +33,7 @@ namespace PRM392_Backend.API.Controllers
 
         [HttpGet]
         [Route("success")]
-        [ApiExplorerSettings(IgnoreApi = true)]
+      //  [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> GetSuccess(long orderCode, Guid orderId, string userId)
         {
             var result = await serviceManager.PaymentService.UpdatePayment(orderCode, orderId, userId);
@@ -46,7 +46,7 @@ namespace PRM392_Backend.API.Controllers
 
         [HttpGet]
         [Route("cancel")]
-        [ApiExplorerSettings(IgnoreApi = true)]
+       // [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> GetCancel(long orderCode, Guid orderId, string userId)
         {
             var result = await serviceManager.PaymentService.UpdatePayment(orderCode, orderId, userId);

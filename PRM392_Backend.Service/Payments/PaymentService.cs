@@ -81,13 +81,12 @@ namespace PRM392_Backend.Service.Payments
 
             var payOSModel = new PaymentData(
                orderCode: orderCode,
-               amount: totalAmount*25000,
+               //amount: totalAmount*25000,
+               amount: 5000,
                description: $"Payment - Deliveroo",
                items: items,
                returnUrl: $"{domain}/api/Payment/success?orderCode={orderCode}&orderID={order.ID}&userID={userId}",
-               cancelUrl: $"{domain}/api/Payment/cancel?orderCode={orderCode}&orderID={order.ID}&userID={userId}",
-               //returnUrl: $"https://localhost:7187/api/Payment/success?orderCode={orderCode}&orderID={order.ID}&userID={userId}",
-               //cancelUrl: $"https://localhost:7187/api/Payment/cancel?orderCode={orderCode}&orderID={order.ID}&userID={userId}",
+               cancelUrl: $"{domain}/api/Payment/cancel?orderCode={orderCode}&orderID={order.ID}&userID={userId}",           
                buyerName: order.User.FullName,
                buyerEmail: order.User.Email,
                buyerPhone: order.User.PhoneNumber,
