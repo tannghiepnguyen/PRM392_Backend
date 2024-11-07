@@ -12,7 +12,8 @@ namespace PRM392_Backend.Service.Users
 		Task<TokenDto> RefreshToken(TokenDto tokenDto);
 		Task<IdentityResult> UpdateUser(string userId, UserForUpdateDto userForUpdateDto);
 		Task<UserForReturnDto> GetUserById(string userId);
-		Task<User> FindUserByUsername(string username);
+        Task<UserForReturnDto> GetCurrentUser();
+        Task<User> FindUserByUsername(string username);
         Task<IEnumerable<UserForReturnDto>> GetUsers();
 		Task<IdentityResult> UpdateUserPassword(string userId, UserForUpdatePasswordDto userForUpdatePasswordDto);
 	}

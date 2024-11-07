@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,14 +22,16 @@ namespace PRM392_Backend.Service.Users
 		private readonly IMapper mapper;
 		private readonly IConfiguration configuration;
         private readonly IRepositoryManager repositoryManager;
+        private readonly IHttpContextAccessor httpContextAccessor;
         private User? user;
 
-		public AuthenticationService(UserManager<User> userManager, IMapper mapper, IConfiguration configuration, IRepositoryManager repositoryManager)
+		public AuthenticationService(UserManager<User> userManager, IMapper mapper, IConfiguration configuration, IRepositoryManager repositoryManager, IHttpContextAccessor httpContextAccessor)
 		{
 			this.userManager = userManager;
 			this.mapper = mapper;
 			this.configuration = configuration;
             this.repositoryManager = repositoryManager;
+			this.httpContextAccessor = httpContextAccessor;
         }
 		public async Task<TokenDto> CreateToken(User user, bool populateExp)
 		{
@@ -215,7 +218,14 @@ namespace PRM392_Backend.Service.Users
 			return mapper.Map<IEnumerable<UserForReturnDto>>(users);
 		}
 
-		public async Task<IdentityResult> UpdateUserPassword(string userId, UserForUpdatePasswordDto userForUpdatePasswordDto)
+        public async Task<UserForReturnDto> GetCurrentUser()
+        {
+			var userId = httpContextAccessor?.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = await userManager.FindByIdAsync(userId);
+            return mapper.Map<UserForReturnDto>(user);
+        }
+
+        public async Task<IdentityResult> UpdateUserPassword(string userId, UserForUpdatePasswordDto userForUpdatePasswordDto)
 		{
 			var user = await userManager.FindByIdAsync(userId);
 

@@ -25,7 +25,16 @@ namespace PRM392_Backend.API.Controllers
 			return Ok(users);
 		}
 
-		[HttpGet("{id}")]
+        [HttpGet]
+        [Route("current")]
+        [Authorize(Roles = Roles.Customer)]
+        public async Task<IActionResult> GetCurrentUser()
+        {
+            var users = await serviceManager.AuthenticationService.GetCurrentUser();
+            return Ok(users);
+        }
+
+        [HttpGet("{id}")]
 		[Authorize(Roles = Roles.Customer)]
 		public async Task<IActionResult> GetUserById(string id)
 		{

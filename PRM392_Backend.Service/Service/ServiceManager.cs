@@ -37,7 +37,7 @@ namespace PRM392_Backend.Service.Service
         private readonly Lazy<IStoreService> storeService;
         public ServiceManager(PayOSService payOSService, IRepositoryManager repositoryManager, UserManager<User> userManager, IConfiguration configuration, IMapper mapper, IBlobService blobService, IHttpContextAccessor _httpContextAccessor, IHubContext<ChatHub> _hubContext)
 		{
-			authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(userManager, mapper, configuration, repositoryManager));
+			authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(userManager, mapper, configuration, repositoryManager, _httpContextAccessor));
 			categoryService = new Lazy<ICategoryService>(() => new CategoryService(repositoryManager, mapper));
 			storeLocationService = new Lazy<IStoreLocationService>(() => new StoreLocationService(repositoryManager, mapper));
 			productService = new Lazy<IProductService>(() => new ProductService(repositoryManager, mapper, blobService));

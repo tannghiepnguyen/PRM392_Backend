@@ -87,6 +87,7 @@ builder.Services.AddManager();
 builder.Services.AddAutoMapper();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddBlobService(builder.Configuration);
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
