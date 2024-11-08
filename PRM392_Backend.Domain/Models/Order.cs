@@ -31,10 +31,7 @@ namespace PRM392_Backend.Domain.Models
 	[JsonConverter(typeof(JsonStringEnumConverter))]
 	public enum PaymentMethod
 	{
-		VNPay,
-		ZaloPay,
-		PayPal,
-		Momo
+		PayOs
 	}
 	[JsonConverter(typeof(JsonStringEnumConverter))]
 	public enum OrderStatus
