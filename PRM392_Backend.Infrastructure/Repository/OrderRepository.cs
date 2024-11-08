@@ -32,6 +32,7 @@ namespace PRM392_Backend.Infrastructure.Repository
                 .ThenInclude(cartitems => cartitems.Product)
             .Include(order => order.User)
             .Include(order => order.StoreLocation)
+                .ThenInclude(store => store.Store)
             .ToListAsync();
 
         /// <summary>

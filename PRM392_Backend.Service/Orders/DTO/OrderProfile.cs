@@ -20,7 +20,9 @@ namespace PRM392_Backend.Service.Orders.DTO
                 .ForMember(dest => dest.StoreLocation, opt => opt.MapFrom(src => src.StoreLocation))
                 .ReverseMap();
             CreateMap<User, UserResponse>().ReverseMap();
-            CreateMap<StoreLocation, StoreLocationResponse>().ReverseMap();
+            CreateMap<StoreLocation, StoreLocationResponse>()
+                .ForMember(dest => dest.StoreName, opt => opt.MapFrom(src => src.Store.StoreName))
+                .ReverseMap();
         }
     }
 }
