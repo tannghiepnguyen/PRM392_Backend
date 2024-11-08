@@ -57,6 +57,10 @@ namespace PRM392_Backend.Service.Orders
             order.OrderStatus = OrderStatus.Pending.ToString() ;
             order.PaymentMethod = orderDTO.PaymentMethod.ToString() ;
             var cartExist = await repositoryManager.CartRepository.GetCartById(order.CartID,true);
+            if(cartExist == null)
+            {
+                throw new InvalidOperationException("This cart isn't exist");
+            }
             if(cartExist.IsActive == false)
             {
                 throw new InvalidOperationException("This cart is InActive");

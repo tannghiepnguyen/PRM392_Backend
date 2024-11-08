@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PRM392_Backend.Domain.Exceptions;
 using PRM392_Backend.Domain.Models;
@@ -14,10 +15,11 @@ namespace PRM392_Backend.API.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly IServiceManager serviceManager;
-
-        public OrdersController(IServiceManager serviceManager)
+        private readonly IMapper mapper;
+        public OrdersController(IServiceManager serviceManager, IMapper mapper)
         {
             this.serviceManager = serviceManager;
+            this.mapper = mapper;
         }
 
 
@@ -47,6 +49,7 @@ namespace PRM392_Backend.API.Controllers
             {
                 return NotFound();
             }
+          
             return Ok(order);
         }
 
@@ -55,7 +58,8 @@ namespace PRM392_Backend.API.Controllers
         public async Task<IActionResult> CreateOrder([FromBody] OrderRequestForCreate orderForCreationDto)
         {
             var order = await serviceManager.OrderService.CreateOrder(orderForCreationDto);
-            return Ok();
+            OrderResponse orderResponse = mapper.Map<OrderResponse>(order);
+            return Ok(orderResponse);
         }
 
 
