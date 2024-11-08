@@ -33,10 +33,10 @@ namespace PRM392_Backend.API.Controllers
 
         [HttpGet]
         [Route("success")]
-      //  [ApiExplorerSettings(IgnoreApi = true)]
-        public async Task<IActionResult> GetSuccess(long orderCode, Guid orderId, string userId)
+        [Authorize(Roles = Roles.Customer)]  
+        public async Task<IActionResult> GetSuccess(long orderCode)
         {
-            var result = await serviceManager.PaymentService.UpdatePayment(orderCode, orderId, userId);
+            var result = await serviceManager.PaymentService.UpdatePayment(orderCode);
             if (result != null)
             {
                 return Ok("Payment has been paid");
@@ -46,10 +46,10 @@ namespace PRM392_Backend.API.Controllers
 
         [HttpGet]
         [Route("cancel")]
-       // [ApiExplorerSettings(IgnoreApi = true)]
-        public async Task<IActionResult> GetCancel(long orderCode, Guid orderId, string userId)
+        [Authorize(Roles = Roles.Customer)]
+        public async Task<IActionResult> GetCancel(long orderCode)
         {
-            var result = await serviceManager.PaymentService.UpdatePayment(orderCode, orderId, userId);
+            var result = await serviceManager.PaymentService.UpdatePayment(orderCode);
             if (result != null)
             {
                 return Ok("Payment has been canceled");

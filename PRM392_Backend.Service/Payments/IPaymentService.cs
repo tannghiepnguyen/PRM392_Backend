@@ -12,7 +12,7 @@ namespace PRM392_Backend.Service.Payments
         // Task<Payment> GetPaymentById(Guid id);
         Task<IEnumerable<PaymentResponse>> GetAllPayments(bool trackChange);
         Task<string>CreatePayment(PaymentRequest payment);
-        Task<string> UpdatePayment(long OrderCode, Guid OrderID, string UserID);
+        Task<string> UpdatePayment(long OrderCode);
         //Task<IEnumerable<Payment>> GetAllPayments();
     }
 } 

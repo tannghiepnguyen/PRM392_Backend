@@ -14,6 +14,7 @@ using PRM392_Backend.Service.PayOSLib;
 using Azure.Core;
 using System.Threading;
 using PRM392_Backend.Service.Categories.DTO;
+using static System.Net.WebRequestMethods;
 
 namespace PRM392_Backend.Service.Payments
 {
@@ -76,17 +77,14 @@ namespace PRM392_Backend.Service.Payments
 
                 _repositoryManager.PaymentRepository.CreatePayment(payment);
             }
-
-           
-
+             
             var payOSModel = new PaymentData(
                orderCode: orderCode,
-               //amount: totalAmount*25000,
-               amount: 5000,
+               amount: totalAmount*2000,             
                description: $"Payment - Deliveroo",
                items: items,
-               returnUrl: $"{domain}/api/Payment/success?orderCode={orderCode}&orderID={order.ID}&userID={userId}",
-               cancelUrl: $"{domain}/api/Payment/cancel?orderCode={orderCode}&orderID={order.ID}&userID={userId}",           
+               returnUrl: $"{domain}/success.html",
+               cancelUrl: $"{domain}/cancel.html",
                buyerName: order.User.FullName,
                buyerEmail: order.User.Email,
                buyerPhone: order.User.PhoneNumber,
@@ -112,12 +110,13 @@ namespace PRM392_Backend.Service.Payments
         }
 
 
-        public async Task<string> UpdatePayment(long ordercode, Guid orderId, string userId)
-        {          
+        public async Task<string> UpdatePayment(long ordercode)
+        {
+            var userId = _httpContextAccessor?.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             //Order pending to checkout
             var order = _repositoryManager.OrderRepository.GetPendingOrderAndUserId(userId, true);
 
-            var payment = _repositoryManager.PaymentRepository.GetPaymentByOrderId(orderId, true);
+            var payment = _repositoryManager.PaymentRepository.GetPaymentByOrderId(order.ID, true);
 
             if (order == null)
             {
@@ -201,5 +200,7 @@ namespace PRM392_Backend.Service.Payments
             }
            
         }
+
+        
     } 
 } 
