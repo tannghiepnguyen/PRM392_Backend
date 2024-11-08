@@ -40,10 +40,10 @@ namespace PRM392_Backend.Service.StoreLocations
 			return mapper.Map<IEnumerable<StoreLocationForReturnDto>>(storeLocations);
 		}
 
-		public async Task<StoreLocationForReturnDto?> GetStoreLocation(Guid id, bool trackChange)
+		public async Task<StoreLocationForReturnDto?> GetStoreLocation(Guid storeId, bool trackChange)
 		{
-			var storeLocation = await repositoryManager.StoreLocationRepository.GetStoreLocationById(id, trackChange);
-			if (storeLocation == null) throw new StoreLocationNotFoundException(id);
+			var storeLocation = await repositoryManager.StoreLocationRepository.GetStoreLocationByStoreId(storeId, trackChange);
+			if (storeLocation == null) throw new StoreLocationNotFoundException(storeId);
 
 			return mapper.Map<StoreLocationForReturnDto>(storeLocation);
 		}

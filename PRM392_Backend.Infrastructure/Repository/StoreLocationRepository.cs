@@ -15,8 +15,9 @@ namespace PRM392_Backend.Infrastructure.Repository
 
 		public async Task<IEnumerable<StoreLocation>> GetActiveStoreLocations(bool trackChange) => await FindByCondition(s => s.IsActive == true, trackChange).ToListAsync();
 
-		public async Task<StoreLocation?> GetStoreLocationById(Guid id, bool trackChange) => await FindByCondition(s => s.ID == id, trackChange).FirstOrDefaultAsync();
+		public async Task<StoreLocation?> GetStoreLocationByStoreId(Guid storeId, bool trackChange) => await FindByCondition(s => s.StoreID == storeId, trackChange).FirstOrDefaultAsync();
+        public async Task<StoreLocation?> GetStoreLocationById(Guid id, bool trackChange) => await FindByCondition(s => s.ID == id, trackChange).FirstOrDefaultAsync();
 
-		public async Task<IEnumerable<StoreLocation>> GetStoreLocations(bool trackChange) => await FindAll(trackChange).ToListAsync();
+        public async Task<IEnumerable<StoreLocation>> GetStoreLocations(bool trackChange) => await FindAll(trackChange).ToListAsync();
 	}
 }

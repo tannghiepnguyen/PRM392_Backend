@@ -33,11 +33,11 @@ namespace PRM392_Backend.API.Controllers
 			return Ok(activeStoreLocations);
 		}
 
-		[HttpGet("{id:guid}")]
+		[HttpGet("{storeID:guid}")]
 		[Authorize(Roles = Roles.Customer)]
-		public async Task<IActionResult> GetStoreLocation([FromRoute] Guid id)
+		public async Task<IActionResult> GetStoreLocation([FromRoute] Guid storeID)
 		{
-			var storeLocation = await serviceManager.StoreLocationService.GetStoreLocation(id, trackChange: false);
+			var storeLocation = await serviceManager.StoreLocationService.GetStoreLocation(storeID, trackChange: false);
 			if (storeLocation == null)
 			{
 				return NotFound();
