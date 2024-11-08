@@ -43,6 +43,7 @@ namespace PRM392_Backend.Infrastructure.Repository
             await FindByCondition(cart => cart.IsActive && cart.UserID == accountID.ToString(), trackChange)
                 .Include(cart => cart.CartItems) // Tải CartItems
                 .ThenInclude(cartItem => cartItem.Product) // Tải Product của từng CartItem
+                .ThenInclude(product => product.Store)
                 .ToListAsync();
 
         public Cart? GetCartActiveAndUserId(string accountID, bool trackChange) =>

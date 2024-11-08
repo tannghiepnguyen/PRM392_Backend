@@ -8,7 +8,7 @@ namespace PRM392_Backend.Service.Carts.DTO
 {
     public class CartDTO
     {
-        public Guid ID { get; set; }
+        public Guid ID { get; set; }        
         public double TotalPrice { get; set; }
         public string Status { get; set; }
         public bool IsActive { get; set; }
@@ -22,6 +22,7 @@ namespace PRM392_Backend.Service.Carts.DTO
         public string ProductName { get; set; }
         public int Quantity { get; set; }
         public double Price { get; set; }
+        public string StoreID { get; set; }
     }
 
     public class GetCartItemResponse
