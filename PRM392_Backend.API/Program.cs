@@ -35,6 +35,10 @@ if (string.IsNullOrEmpty(connection))
 {
     throw new InvalidOperationException("No connection string found.");
 }
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+});
 
 builder.Services.AddSingleton(x =>
     new PayOSService(

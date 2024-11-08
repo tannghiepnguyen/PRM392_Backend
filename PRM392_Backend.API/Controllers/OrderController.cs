@@ -55,7 +55,7 @@ namespace PRM392_Backend.API.Controllers
         public async Task<IActionResult> CreateOrder([FromBody] OrderRequestForCreate orderForCreationDto)
         {
             var order = await serviceManager.OrderService.CreateOrder(orderForCreationDto);
-            return CreatedAtAction(nameof(GetOrder), new { id = order.ID }, order);
+            return Ok();
         }
 
 

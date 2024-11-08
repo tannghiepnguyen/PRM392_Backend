@@ -85,7 +85,7 @@ namespace PRM392_Backend.Service.Orders
                     Console.WriteLine($"Entity: {entry.Entity.GetType().Name}, State: {entry.State}");
                 }
 
-                throw; // Ném lại ngoại lệ để xử lý ở cấp cao hơn nếu cần
+                throw;
             }
 
             return order;
